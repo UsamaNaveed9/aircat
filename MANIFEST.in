@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include aircat *.css
+recursive-include aircat *.csv
+recursive-include aircat *.html
+recursive-include aircat *.ico
+recursive-include aircat *.js
+recursive-include aircat *.json
+recursive-include aircat *.md
+recursive-include aircat *.png
+recursive-include aircat *.py
+recursive-include aircat *.svg
+recursive-include aircat *.txt
+recursive-exclude aircat *.pyc
