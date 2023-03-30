@@ -1,0 +1,47 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-03-30 14:47:59.836521",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "coupon_issue",
+  "amount",
+  "alter_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "coupon_issue",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Coupon Issue",
+   "options": "Coupon Issue"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount"
+  },
+  {
+   "fieldname": "alter_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Alter Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-03-30 14:47:59.836521",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Coupon Invoiced Items",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
