@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "naming_series:",
  "creation": "2023-03-30 14:08:54.206079",
@@ -58,7 +59,8 @@
   {
    "fieldname": "issued_serial_number",
    "fieldtype": "Int",
-   "label": "Issued Serial Number"
+   "label": "Issued Serial Number",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_4",
@@ -67,7 +69,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-30 14:11:02.819409",
+ "modified": "2023-04-06 14:54:33.242092",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "BookLet",

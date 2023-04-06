@@ -2,7 +2,20 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Coupon Issue', {
-	// refresh: function(frm) {
-
-	// }
+	setup: function(frm) {
+		frm.set_query("booklet", function(){
+		    return {
+		        filters: [
+		            ["BookLet","status","in", ["Active"]]
+		        ]
+		    }
+		});
+		frm.set_query("driver", function(){
+		    return {
+		        filters: [
+		            ["Driver","status","in", ["Active"]]
+		        ]
+		    }
+		});
+	}
 });
