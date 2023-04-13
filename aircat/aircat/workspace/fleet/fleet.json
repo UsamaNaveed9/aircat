@@ -1,0 +1,54 @@
+{
+ "charts": [],
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BookLet\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Issue\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Invoiced\",\"col\":3}}]",
+ "creation": "2023-04-12 14:23:53.122628",
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "hide_custom": 0,
+ "icon": "group-by",
+ "idx": 0,
+ "label": "Fleet",
+ "links": [],
+ "modified": "2023-04-12 14:29:02.770838",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Fleet",
+ "owner": "Administrator",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 4.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Vehicle",
+   "link_to": "Vehicle",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Driver",
+   "link_to": "Driver",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "BookLet",
+   "link_to": "BookLet",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Coupon Issue",
+   "link_to": "Coupon Issue",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Coupon Invoiced",
+   "link_to": "Coupon Invoiced",
+   "type": "DocType"
+  }
+ ],
+ "title": "Fleet"
+}
