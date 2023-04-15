@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils.password import get_decrypted_password
 
 @frappe.whitelist()
 def get_employee_master():
@@ -11,14 +12,25 @@ def get_employee_master():
 	return employees
 
 @frappe.whitelist()
-def login(company_email):
+def login(company_email,password):
 	if frappe.db.exists("Employee", {"company_email": company_email}):
-		employee_data = frappe.db.sql('''select name,employee_name,gender,status,company_email,cell_number
+		emp = frappe.db.sql('''select name,company_email,new_password
 							from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
+		for e in emp:					
+			hash_password = e.new_password
+			plain_text_password = get_decrypted_password("Employee", e.name, "new_password", hash_password)
+
+		if plain_text_password == password:
+			employee_data = frappe.db.sql('''select name,employee_name,gender,status,company_email,cell_number,shift_start_time,shift_end_time
+								from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
 		
-		return employee_data					
+			return employee_data
+
+		else:
+			message = "Invalid Credentials"
+			return message				
 	else:
-		message = "Invalid Email"
+		message = "Employee Not Exist on this Email"
 		return message
 
 
@@ -34,10 +46,10 @@ def employee_checkin(args):
 				doc = frappe.get_doc(i)
 				doc.save()
 				if doc.name:
-					message = "Record Entered successfully"
+					message = "Office IN Entered successfully"
 					return message
 			else:
-				message = "CheckIn Record Exist Already"
+				message = "OfficeIn Record Exist Already"
 				return message
 		elif log_type == "OUT":
 			if log_type == "OUT" and frappe.db.exists("Employee Checkin", {"employee": employee, "date": date, "log_type": "IN"}):
@@ -46,13 +58,13 @@ def employee_checkin(args):
 					doc = frappe.get_doc(i)
 					doc.save()
 					if doc.name:
-						message = "Record Entered successfully"
+						message = "Office Out Entered successfully"
 						return message
 				else:
-					message = "CheckOut Record Exist Already"
+					message = "Office Out Record Exist Already"
 				return message			
 			else:
-				message = "CheckIn Record Doesn't Exist"
+				message = "OfficeIn Record Doesn't Exist"
 				return message	
 
 

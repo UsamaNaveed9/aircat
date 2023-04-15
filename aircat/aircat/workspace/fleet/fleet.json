@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BookLet\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Issue\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Invoiced\",\"col\":3}}]",
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle Log\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BookLet\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Issue\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Invoiced\",\"col\":3}}]",
  "creation": "2023-04-12 14:23:53.122628",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -9,7 +9,7 @@
  "idx": 0,
  "label": "Fleet",
  "links": [],
- "modified": "2023-04-12 14:29:02.770838",
+ "modified": "2023-04-15 19:37:32.913612",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Fleet",
@@ -23,6 +23,12 @@
    "doc_view": "List",
    "label": "Vehicle",
    "link_to": "Vehicle",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Vehicle Log",
+   "link_to": "Vehicle Log",
    "type": "DocType"
   },
   {
