@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils.password import get_decrypted_password
+from frappe.utils import today
 
 @frappe.whitelist()
 def get_employee_master():
@@ -46,7 +47,19 @@ def employee_checkin(args):
 				doc = frappe.get_doc(i)
 				doc.save()
 				if doc.name:
-					message = "Office IN Entered successfully"
+					attendance = frappe.get_doc({
+							"doctype": "Attendance",
+							"employee": i.get("employee"),
+							"attendance_date": i.get("date"),
+							"status": "Present"
+						})
+					attendance.save(ignore_permissions=True)
+					attendance.submit()
+
+					doc.attendance = attendance.name
+					doc.save(ignore_permissions=True)
+
+					message = "Office IN and Attendance Entered successfully"
 					return message
 			else:
 				message = "OfficeIn Record Exist Already"
@@ -66,5 +79,54 @@ def employee_checkin(args):
 			else:
 				message = "OfficeIn Record Doesn't Exist"
 				return message	
+
+@frappe.whitelist()
+def employee_allocated_leaves(employee_id):
+	if frappe.db.exists("Employee", {"name": employee_id}):
+		current_date = today()
+		if frappe.db.exists("Leave Allocation",{"employee": employee_id,"docstatus": 1,"from_date": ('<=', current_date),"to_date": ('>=', current_date)}):
+			record = frappe.db.sql("""SELECT employee, employee_name, department, leave_type, from_date, to_date, total_leaves_allocated FROM `tabLeave Allocation` WHERE employee=%s and docstatus = 1 and from_date <= %s
+						and to_date >= %s""", (employee_id,current_date,current_date), as_dict=True)
+
+			return record
+		else:
+			message = "Leaves Not Allocated"
+			return message	
+	else:
+		message = "Employee Not Exist"
+		return message
+
+@frappe.whitelist()
+def employee_leave_application(args):
+	for i in args:
+		employee = i.get("employee")
+		from_date = i.get("from_date")
+		to_date = i.get("to_date")
+		if frappe.db.exists("Leave Allocation",{"employee": employee,"docstatus": 1,"from_date": ('<=', from_date),"to_date": ('>=', to_date)}):
+			if not frappe.db.exists("Leave Application", {"employee": employee,"from_date": from_date,"to_date":to_date}):
+				leave = frappe.get_doc({
+							"doctype": "Leave Application",
+							"employee": i.get("employee"),
+							"leave_type": i.get("leave_type"),
+							"from_date": i.get("from_date"),
+							"to_date": i.get("to_date"),
+							"half_day": i.get("half_day"),
+							"description": i.get("description")
+						})
+				leave.save(ignore_permissions=True)
+
+				message = "Leave Application is Applied"
+				return message		
+			
+			else:
+				message = "Leave Application already applied of these dates"
+				return message
+		else:
+			message = "Leaves Not Allocated"
+			return message		
+
+
+
+
 
 

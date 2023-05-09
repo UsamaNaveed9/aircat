@@ -122,14 +122,15 @@
   },
   {
    "fieldname": "authorized_by",
-   "fieldtype": "Data",
-   "label": "Authorized by"
+   "fieldtype": "Link",
+   "label": "Authorized by",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-06 14:54:22.442057",
+ "modified": "2023-04-18 16:12:06.011500",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Coupon Issue",
@@ -167,6 +168,7 @@
    "write": 1
   }
  ],
+ "search_fields": "issue_serial_number",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
