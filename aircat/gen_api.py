@@ -123,10 +123,100 @@ def employee_leave_application(args):
 				return message
 		else:
 			message = "Leaves Not Allocated"
-			return message		
+			return message
+
+@frappe.whitelist()
+def requisition_request(args):
+	for i in args:
+		current_date = today()
+		req = frappe.get_doc({
+					"doctype": "Requisition",
+					"employee": i.get("employee"),
+					"posting_date": current_date,
+					"description": i.get("description"),
+					"items_details": i.get("items_details")
+				})
+		req.save(ignore_permissions=True)
+	
+		message = "Requisition Request Submitted successfully"
+		return message
 
 
+@frappe.whitelist()
+def update_personal_info(args):
+	for i in args:
+		employee_id = i.get("employee")
+		if frappe.db.exists("Employee", {"name": employee_id}):
+			doc = frappe.get_doc("Employee", employee_id)
+			doc.cell_number = i.get("mobile_no")
+			doc.personal_email = i.get("personal_email")
+			doc.current_address = i.get("current_address")
+			doc.current_accommodation_type = i.get("current_address_type")
+			doc.permanent_address = i.get("permanent_address")
+			doc.permanent_accommodation_type = i.get("permanent_address_type")
+			doc.save(ignore_permissions=True)
+
+			message = "Record Updated successfully"
+			return message
+		else:
+			message = "Employee Not Exist"
+			return message						
 
 
+@frappe.whitelist()
+def salary_slip_details(employee,start_date,end_date):
+	if frappe.db.exists("Salary Slip",{"employee": employee,"docstatus": 1,"start_date": ('=', start_date),"end_date": ('=', end_date)}):
+		slip = frappe.db.sql('''SELECT 
+							`tabSalary Slip`.name as `Salary Slip`,
+							`tabSalary Slip`.start_date as `Start Date`,
+							`tabSalary Slip`.end_date as `End Date`,
+							`tabSalary Slip`.employee as `Employee`,
+							`tabSalary Slip`.total_working_days as `Working Days`,
+							`tabSalary Slip`.absent_days as `Absent Days`,
+							`tabSalary Slip`.payment_days as `Payment Days`,
+							`tabSalary Slip`.gross_pay as `Gross Pay`,
+							`tabSalary Slip`.total_deduction as `Total Deduction`,
+							`tabSalary Slip`.net_pay as `Net Pay`
+						FROM 
+							`tabSalary Slip`
+						WHERE 
+							`tabSalary Slip`.start_date = %s AND `tabSalary Slip`.end_date = %s
+							AND `tabSalary Slip`.employee = %s
+						ORDER BY 
+							`tabSalary Slip`.start_date DESC''',(start_date,end_date,employee),as_dict=1 )
+
+		return slip
+	else:
+		message = "Salary Slip Record not exist in these dates"
+		return message					
 
 
+@frappe.whitelist()
+def overtime_entry(args):
+	for i in args:
+		employee_id = i.get("employee")
+		from_time = i.get("from_time")
+		to_time = i.get("to_time")
+		date = i.get("date")
+		if frappe.db.exists("Employee", {"name": employee_id}):
+			if not frappe.db.exists("Overtime", {"employee": employee_id,"from_time": from_time,"to_time":to_time,"date":date}):
+				overtime = frappe.get_doc({
+							"doctype": "Overtime",
+							"employee": i.get("employee"),
+							"date": i.get("date"),
+							"from_time": i.get("from_time"),
+							"to_time": i.get("to_time"),
+							"total_hrs": i.get("total_hrs"),
+							"purpose_of_overtime": i.get("purpose_of_overtime")
+						})
+				overtime.save(ignore_permissions=True)
+
+				message = "Overtime record entered successfully"
+				return message		
+			
+			else:
+				message = "Overtime record already exit of same date and time"
+				return message
+		else:
+			message = "Employee Not Exist"
+			return message
