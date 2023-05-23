@@ -1,0 +1,43 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-05-15 16:22:30.260744",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicles",
+  "budget_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "vehicles",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Vehicles",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fieldname": "budget_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Budget Amount",
+   "options": "Company:company:default_currency",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-05-23 19:52:15.654246",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Vehicles",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

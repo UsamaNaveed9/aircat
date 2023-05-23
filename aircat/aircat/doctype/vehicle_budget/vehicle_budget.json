@@ -17,6 +17,8 @@
   "fiscal_year",
   "column_break_3",
   "monthly_distribution",
+  "from_date",
+  "to_date",
   "amended_from",
   "section_break_6",
   "applicable_on_material_request",
@@ -209,12 +211,24 @@
    "fieldtype": "Select",
    "label": "For Month",
    "options": "January\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember"
+  },
+  {
+   "default": "Now",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "default": "Now",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-22 18:43:16.558056",
+ "modified": "2023-05-23 18:23:43.624531",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Vehicle Budget",
