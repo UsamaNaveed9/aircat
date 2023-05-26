@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle Log\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BookLet\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Issue\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Invoiced\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Requisition\",\"col\":3}}]",
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle Log\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BookLet\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Issue\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Coupon Invoiced\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Requisition\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vehicle Budget\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Driver CheckIn-Out\",\"col\":3}}]",
  "creation": "2023-04-12 14:23:53.122628",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -9,7 +9,7 @@
  "idx": 0,
  "label": "Fleet",
  "links": [],
- "modified": "2023-05-14 14:30:22.849905",
+ "modified": "2023-05-25 20:42:22.281136",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Fleet",
@@ -24,6 +24,13 @@
    "doc_view": "List",
    "label": "Vehicle",
    "link_to": "Vehicle",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Vehicle Budget",
+   "link_to": "Vehicle Budget",
    "type": "DocType"
   },
   {
@@ -60,6 +67,12 @@
    "doc_view": "List",
    "label": "Requisition",
    "link_to": "Requisition",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Driver CheckIn-Out",
+   "link_to": "Driver CheckIn-Out",
    "type": "DocType"
   }
  ],

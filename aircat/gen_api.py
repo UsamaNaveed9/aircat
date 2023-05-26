@@ -220,3 +220,47 @@ def overtime_entry(args):
 		else:
 			message = "Employee Not Exist"
 			return message
+
+@frappe.whitelist()
+def driver_checkin_out(args):
+	for i in args:
+		log_type = i.get("log_type")
+		employee = i.get("employee")
+		date = i.get("date")
+		
+		if frappe.db.exists("Driver CheckIn-Out", {"employee": employee, "date": date}):
+			last_doc = frappe.get_last_doc('Driver CheckIn-Out', filters={"employee": employee, "date": date})
+		
+			if log_type == "IN":
+				if log_type == "IN" and last_doc and last_doc.log_type == "OUT":
+					i['doctype'] = 'Driver CheckIn-Out'
+					doc = frappe.get_doc(i)
+					doc.save(ignore_permissions=True)
+					if doc.name:
+						message = "Driver CheckIN Record Entered successfully"
+						return message
+				else:
+					message = "First CheckOut and then CheckIn"
+					return message
+			elif log_type == "OUT":	
+				if log_type == "OUT" and last_doc and last_doc.log_type == "IN":
+					i['doctype'] = 'Driver CheckIn-Out'
+					doc = frappe.get_doc(i)
+					doc.save(ignore_permissions=True)
+					if doc.name:
+						message = "Driver CheckOut Record Entered successfully"
+						return message
+				else:
+					message = "First CheckIn and then CheckOut"
+					return message
+		elif log_type == "OUT":
+			i['doctype'] = 'Driver CheckIn-Out'
+			doc = frappe.get_doc(i)
+			doc.save(ignore_permissions=True)
+			if doc.name:
+				message = "Driver CheckOut Record Entered successfully"
+				return message
+		else:
+			message = "First CheckOut and Then CheckIn"
+			return message
+

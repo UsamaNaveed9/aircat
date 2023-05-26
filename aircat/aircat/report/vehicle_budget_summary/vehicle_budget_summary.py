@@ -87,10 +87,14 @@ def get_data(filters=None):
 
 		coupon_list = []
 		for en in entries:
-			coup = frappe.db.sql("""select vehicle,sum(issued_amount) as coupon_amount from `tabCoupon Issue` 
+			coup = frappe.db.sql("""select vehicle,sum(issued_amount) as coupon_amount,sum(alter_amount) as alter_amount from `tabCoupon Issue` 
 									where date_of_issue >= '{0}' and date_of_issue <= '{1}' and vehicle = '{2}' """.format(filters.from_date,filters.to_date,en.vehicle),as_dict=1)							
 			for c in coup:
-				en["coupon_amount"] = c.coupon_amount
+				if c.alter_amount > 0:
+					en["coupon_amount"] = c.alter_amount
+				else:	
+					en["coupon_amount"] = c.coupon_amount
+
 				en["total_amount"] = en['coupon_amount'] + en['m_amount']
 				en["variance"] = en['budget_amount'] - en['total_amount']
 				en["variance_ptg"] = en['total_amount']/en['budget_amount'] * 100
