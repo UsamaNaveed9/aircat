@@ -13,6 +13,7 @@
   "date",
   "employee",
   "employee_name",
+  "status",
   "authorize_by",
   "authorize_person_name",
   "column_break_5",
@@ -83,11 +84,17 @@
    "fieldname": "authorize_person_name",
    "fieldtype": "Data",
    "label": "Authorize Person Name"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nApproved\nRejected"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-14 22:13:57.999026",
+ "modified": "2023-05-30 18:45:15.304526",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Overtime",

@@ -4,21 +4,22 @@
  "creation": "2023-04-12 14:23:53.122628",
  "docstatus": 0,
  "doctype": "Workspace",
+ "for_user": "",
  "hide_custom": 0,
  "icon": "group-by",
  "idx": 0,
- "label": "Fleet",
+ "label": "Transportation",
  "links": [],
- "modified": "2023-05-25 20:42:22.281136",
+ "modified": "2023-05-30 16:17:25.820297",
  "modified_by": "Administrator",
  "module": "Aircat",
- "name": "Fleet",
+ "name": "Transportation",
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 16.0,
+ "sequence_id": 17.0,
  "shortcuts": [
   {
    "doc_view": "List",
@@ -76,5 +77,5 @@
    "type": "DocType"
   }
  ],
- "title": "Fleet"
+ "title": "Transportation"
 }

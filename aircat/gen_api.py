@@ -1,6 +1,6 @@
 import frappe
 from frappe.utils.password import get_decrypted_password
-from frappe.utils import today
+from frappe.utils import today, get_first_day, get_last_day, getdate
 
 @frappe.whitelist()
 def get_employee_master():
@@ -103,24 +103,28 @@ def employee_leave_application(args):
 		from_date = i.get("from_date")
 		to_date = i.get("to_date")
 		if frappe.db.exists("Leave Allocation",{"employee": employee,"docstatus": 1,"from_date": ('<=', from_date),"to_date": ('>=', to_date)}):
-			if not frappe.db.exists("Leave Application", {"employee": employee,"from_date": from_date,"to_date":to_date}):
-				leave = frappe.get_doc({
-							"doctype": "Leave Application",
-							"employee": i.get("employee"),
-							"leave_type": i.get("leave_type"),
-							"from_date": i.get("from_date"),
-							"to_date": i.get("to_date"),
-							"half_day": i.get("half_day"),
-							"description": i.get("description")
-						})
-				leave.save(ignore_permissions=True)
+			if from_date and to_date and not (getdate(to_date) < getdate(from_date)):
+				if not frappe.db.exists("Leave Application", {"employee": employee, "docstatus": ('<', 2),"to_date": ('>=', from_date),"from_date":('<=', to_date)}):
+					leave = frappe.get_doc({
+								"doctype": "Leave Application",
+								"employee": i.get("employee"),
+								"leave_type": i.get("leave_type"),
+								"from_date": i.get("from_date"),
+								"to_date": i.get("to_date"),
+								"half_day": i.get("half_day"),
+								"description": i.get("description")
+							})
+					leave.save(ignore_permissions=True)
 
-				message = "Leave Application is Applied"
-				return message		
-			
+					message = "Leave Application is Applied"
+					return message		
+				
+				else:
+					message = "Leave Application already applied between these dates"
+					return message
 			else:
-				message = "Leave Application already applied of these dates"
-				return message
+				message = "To date cannot be before from date"
+				return message	
 		else:
 			message = "Leaves Not Allocated"
 			return message
@@ -160,35 +164,7 @@ def update_personal_info(args):
 			return message
 		else:
 			message = "Employee Not Exist"
-			return message						
-
-
-@frappe.whitelist()
-def salary_slip_details(employee,start_date,end_date):
-	if frappe.db.exists("Salary Slip",{"employee": employee,"docstatus": 1,"start_date": ('=', start_date),"end_date": ('=', end_date)}):
-		slip = frappe.db.sql('''SELECT 
-							`tabSalary Slip`.name as `Salary Slip`,
-							`tabSalary Slip`.start_date as `Start Date`,
-							`tabSalary Slip`.end_date as `End Date`,
-							`tabSalary Slip`.employee as `Employee`,
-							`tabSalary Slip`.total_working_days as `Working Days`,
-							`tabSalary Slip`.absent_days as `Absent Days`,
-							`tabSalary Slip`.payment_days as `Payment Days`,
-							`tabSalary Slip`.gross_pay as `Gross Pay`,
-							`tabSalary Slip`.total_deduction as `Total Deduction`,
-							`tabSalary Slip`.net_pay as `Net Pay`
-						FROM 
-							`tabSalary Slip`
-						WHERE 
-							`tabSalary Slip`.start_date = %s AND `tabSalary Slip`.end_date = %s
-							AND `tabSalary Slip`.employee = %s
-						ORDER BY 
-							`tabSalary Slip`.start_date DESC''',(start_date,end_date,employee),as_dict=1 )
-
-		return slip
-	else:
-		message = "Salary Slip Record not exist in these dates"
-		return message					
+			return message					
 
 
 @frappe.whitelist()
@@ -264,3 +240,210 @@ def driver_checkin_out(args):
 			message = "First CheckOut and Then CheckIn"
 			return message
 
+
+@frappe.whitelist()
+def attendance_list(employee,month_start_date=None,month_end_date=None):
+	if not month_start_date and not month_end_date:
+		current_date = today()
+		start_date = get_first_day(current_date)
+		end_date = get_last_day(current_date)
+
+		sql_query = """
+					SELECT `name`,`employee`,`employee_name`, `attendance_date`, `status`
+					FROM `tabAttendance`
+					WHERE `attendance_date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s
+					"""
+
+		# Prepare the query parameters
+		query_params = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee
+		}
+
+		# Execute the SQL query
+		attendance_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+	else:
+		start_date = month_start_date
+		end_date = month_end_date
+
+		sql_query = """
+					SELECT `name`,`employee`,`employee_name`, `attendance_date`, `status`
+					FROM `tabAttendance`
+					WHERE `attendance_date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s
+					"""
+
+		# Prepare the query parameters
+		query_params = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee
+		}
+
+		# Execute the SQL query
+		attendance_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+	if attendance_records:			  
+		return attendance_records
+	else:
+		message = "Attendance Records Does not exist"
+		return message
+
+@frappe.whitelist()
+def overtime_list(employee,month_start_date=None,month_end_date=None):
+	if not month_start_date and not month_end_date:
+		current_date = today()
+		start_date = get_first_day(current_date)
+		end_date = get_last_day(current_date)
+
+		sql_query = """
+					SELECT `name`,`employee`,`employee_name`, `date`, `status`, `from_time`, `to_time`, `total_hrs`,`purpose_of_overtime`
+					FROM `tabOvertime`
+					WHERE `date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s
+					"""
+
+		# Prepare the query parameters
+		query_params = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee
+		}
+
+		# Execute the SQL query
+		overtime_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+	else:
+		start_date = month_start_date
+		end_date = month_end_date
+
+		sql_query = """
+					SELECT `name`,`employee`,`employee_name`, `date`, `status`, `from_time`, `to_time`, `total_hrs`,`purpose_of_overtime`
+					FROM `tabOvertime`
+					WHERE `date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s
+					"""
+
+		# Prepare the query parameters
+		query_params = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee
+		}
+
+		# Execute the SQL query
+		overtime_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+	if overtime_records:			  
+		return overtime_records
+	else:
+		message = "Overtime Records Does not exist"
+		return message
+
+@frappe.whitelist()
+def requisition_list(employee,month_start_date=None,month_end_date=None):
+	if not month_start_date and not month_end_date:
+		current_date = today()
+		start_date = get_first_day(current_date)
+		end_date = get_last_day(current_date)
+
+		sql_query = """
+					SELECT `name`,`employee`,`employee_name`, `posting_date`, `description`
+					FROM `tabRequisition`
+					WHERE `posting_date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s
+					"""
+
+		# Prepare the query parameters
+		query_params = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee
+		}
+
+		# Execute the SQL query
+		requisition_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+	else:
+		start_date = month_start_date
+		end_date = month_end_date
+
+		sql_query = """
+					SELECT `name`,`employee`,`employee_name`, `posting_date`, `description`
+					FROM `tabRequisition`
+					WHERE `posting_date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s
+					"""
+
+		# Prepare the query parameters
+		query_params = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee
+		}
+
+		# Execute the SQL query
+		requisition_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+	if requisition_records:
+		for rr in requisition_records:
+			sql_query = """
+					SELECT `item_description`,`quantity`
+					FROM `tabRequisition Details`
+					WHERE `parent` = %(parent)s
+					"""
+
+			# Prepare the query parameters
+			query_params = {
+				'parent': rr.name
+			}
+
+			# Execute the SQL query
+			item_details = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+			rr["items"] = item_details
+
+		return requisition_records
+	else:
+		message = "Requisition Records Does not exist"
+		return message
+
+@frappe.whitelist()
+def salary_slip_details(employee):
+	sql_query = """
+				SELECT `name`,`employee`,`employee_name`, `posting_date`,`start_date`,`end_date`,`total_working_days`,`absent_days`,
+							`payment_days`,`gross_pay`,`total_deduction`,`net_pay`
+				FROM `tabSalary Slip`
+				WHERE `employee` = %(employee)s AND `docstatus` = 1
+				"""
+
+	# Prepare the query parameters
+	query_params = {
+		'employee': employee
+	}
+
+	# Execute the SQL query
+	slip_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+	if slip_records:
+		for sl in slip_records:
+			sql_query = """
+					SELECT `salary_component`,`day_amount`,`amount`
+					FROM `tabSalary Detail`
+					WHERE `parent` = %(parent)s
+					"""
+
+			# Prepare the query parameters
+			query_params = {
+				'parent': sl.name
+			}
+
+			# Execute the SQL query
+			salary_components = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+			sl["components"] = salary_components
+
+		return slip_records
+	else:
+		message = "Salary Slip Records Does not exist"
+		return message
