@@ -1,0 +1,42 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-05-31 20:10:21.896626",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "description",
+  "detail"
+ ],
+ "fields": [
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "detail",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Detail",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-05-31 20:10:21.896626",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Job Sheet Description Detail",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,91 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-05-31 20:58:51.448093",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "description",
+  "details",
+  "cheque_number",
+  "receipt_number",
+  "cost",
+  "amount",
+  "rm",
+  "t1",
+  "t2",
+  "true"
+ ],
+ "fields": [
+  {
+   "fieldname": "details",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Details"
+  },
+  {
+   "fieldname": "cheque_number",
+   "fieldtype": "Date",
+   "label": "Cheque Number"
+  },
+  {
+   "fieldname": "receipt_number",
+   "fieldtype": "Data",
+   "label": "Receipt Number"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Data",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Data",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "rm",
+   "fieldtype": "Date",
+   "label": "RM"
+  },
+  {
+   "default": "0",
+   "fieldname": "t1",
+   "fieldtype": "Check",
+   "label": "T1"
+  },
+  {
+   "default": "0",
+   "fieldname": "t2",
+   "fieldtype": "Check",
+   "label": "T2"
+  },
+  {
+   "default": "0",
+   "fieldname": "true",
+   "fieldtype": "Check",
+   "label": "True"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Link",
+   "label": "Description",
+   "options": "Billing Charges"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-06-01 12:39:27.354263",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Job Sheet Billing",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

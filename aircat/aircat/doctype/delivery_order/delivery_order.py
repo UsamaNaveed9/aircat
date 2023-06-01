@@ -603,21 +603,21 @@ def make_stock_entry(source_name, target_doc=None):
 		target.set_job_card_data()
 
 	doclist = get_mapped_doc(
-		"Material Request",
+		"Delivery Order",
 		source_name,
 		{
-			"Material Request": {
+			"Delivery Order": {
 				"doctype": "Stock Entry",
 				"validation": {
 					"docstatus": ["=", 1],
 					"material_request_type": ["in", ["Material Transfer", "Material Issue", "Customer Provided"]],
 				},
 			},
-			"Material Request Item": {
+			"Delivery Order Item": {
 				"doctype": "Stock Entry Detail",
 				"field_map": {
-					"name": "material_request_item",
-					"parent": "material_request",
+					"name": "delivery_order_item",
+					"parent": "delivery_order",
 					"uom": "stock_uom",
 					"job_card_item": "job_card_item",
 				},

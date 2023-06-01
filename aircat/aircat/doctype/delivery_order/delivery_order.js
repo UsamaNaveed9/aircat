@@ -328,7 +328,7 @@ frappe.ui.form.on('Delivery Order', {
 
 	make_stock_entry: function(frm) {
 		frappe.model.open_mapped_doc({
-			method: "erpnext.stock.doctype.material_request.material_request.make_stock_entry",
+			method: "aircat.aircat.doctype.delivery_order.delivery_order.make_stock_entry",
 			frm: frm
 		});
 	},

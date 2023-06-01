@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-05-31 20:50:10.773032",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "container_no",
+  "container_size",
+  "date",
+  "transport",
+  "vehicle_no",
+  "do_no",
+  "delivery_on",
+  "time",
+  "from",
+  "to",
+  "cost",
+  "amount",
+  "rm",
+  "ti",
+  "t2"
+ ],
+ "fields": [
+  {
+   "fieldname": "container_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Container No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "container_size",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Container Size",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "transport",
+   "fieldtype": "Data",
+   "label": "Transport"
+  },
+  {
+   "fieldname": "vehicle_no",
+   "fieldtype": "Link",
+   "label": "Vehicle No",
+   "options": "Vehicle"
+  },
+  {
+   "fieldname": "do_no",
+   "fieldtype": "Data",
+   "label": "DO No"
+  },
+  {
+   "fieldname": "delivery_on",
+   "fieldtype": "Date",
+   "label": "Delivery On"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "from",
+   "fieldtype": "Data",
+   "label": "From"
+  },
+  {
+   "fieldname": "to",
+   "fieldtype": "Data",
+   "label": "To"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Data",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Data",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "rm",
+   "fieldtype": "Data",
+   "label": "RM"
+  },
+  {
+   "default": "0",
+   "fieldname": "ti",
+   "fieldtype": "Check",
+   "label": "Ti"
+  },
+  {
+   "default": "0",
+   "fieldname": "t2",
+   "fieldtype": "Check",
+   "label": "T2"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-05-31 20:50:10.773032",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Transport",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
