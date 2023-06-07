@@ -24,15 +24,26 @@ def login(company_email,password):
 		if plain_text_password == password:
 			employee_data = frappe.db.sql('''select name,employee_name,gender,status,company_email,cell_number,shift_start_time,shift_end_time
 								from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
-		
+			for row in employee_data:
+				row["error"] = False
 			return employee_data
 
 		else:
-			message = "Invalid Credentials"
-			return message				
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "Invalid Credentials"
+			}
+			response.append(msg)
+			return response				
 	else:
-		message = "Employee Not Exist on this Email"
-		return message
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Employee Not Exist on this Email"
+		}
+		response.append(msg)
+		return response
 
 
 @frappe.whitelist()
@@ -59,11 +70,21 @@ def employee_checkin(args):
 					doc.attendance = attendance.name
 					doc.save(ignore_permissions=True)
 
-					message = "Office IN and Attendance Entered successfully"
-					return message
+					response = [] 
+					msg = {
+						"error": False,
+						"message": "Office IN and Attendance Entered successfully"
+					}
+					response.append(msg)
+					return response
 			else:
-				message = "OfficeIn Record Exist Already"
-				return message
+				response = [] 
+				msg = {
+					"error": True,
+					"message": "OfficeIn Record Exist Already"
+				}
+				response.append(msg)
+				return response
 		elif log_type == "OUT":
 			if log_type == "OUT" and frappe.db.exists("Employee Checkin", {"employee": employee, "date": date, "log_type": "IN"}):
 				if not frappe.db.exists("Employee Checkin", {"employee": employee, "date": date, "log_type": "OUT"}):
@@ -71,14 +92,29 @@ def employee_checkin(args):
 					doc = frappe.get_doc(i)
 					doc.save()
 					if doc.name:
-						message = "Office Out Entered successfully"
-						return message
+						response = [] 
+						msg = {
+							"error": False,
+							"message": "Office Out Record Entered successfully"
+						}
+						response.append(msg)
+						return response
 				else:
-					message = "Office Out Record Exist Already"
-				return message			
+					response = [] 
+					msg = {
+						"error": True,
+						"message": "Office Out Record Exist Already"
+					}
+					response.append(msg)
+					return response			
 			else:
-				message = "OfficeIn Record Doesn't Exist"
-				return message	
+				response = [] 
+				msg = {
+					"error": True,
+					"message": "OfficeIn Record Doesn't Exist"
+				}
+				response.append(msg)
+				return response
 
 @frappe.whitelist()
 def employee_allocated_leaves(employee_id):
@@ -88,13 +124,25 @@ def employee_allocated_leaves(employee_id):
 			record = frappe.db.sql("""SELECT employee, employee_name, department, leave_type, from_date, to_date, total_leaves_allocated FROM `tabLeave Allocation` WHERE employee=%s and docstatus = 1 and from_date <= %s
 						and to_date >= %s""", (employee_id,current_date,current_date), as_dict=True)
 
+			for row in record:
+				row["error"] = False
 			return record
 		else:
-			message = "Leaves Not Allocated"
-			return message	
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "Leaves Not Allocated"
+			}
+			response.append(msg)
+			return response	
 	else:
-		message = "Employee Not Exist"
-		return message
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Employee Not Exist"
+		}
+		response.append(msg)
+		return response
 
 @frappe.whitelist()
 def employee_leave_application(args):
@@ -116,18 +164,37 @@ def employee_leave_application(args):
 							})
 					leave.save(ignore_permissions=True)
 
-					message = "Leave Application is Applied"
-					return message		
-				
+					response = [] 
+					msg = {
+						"error": False,
+						"message": "Leave Application is Applied"
+					}
+					response.append(msg)
+					return response
 				else:
-					message = "Leave Application already applied between these dates"
-					return message
+					response = [] 
+					msg = {
+						"error": True,
+						"message": "Leave Application already applied between these dates"
+					}
+					response.append(msg)
+					return response
 			else:
-				message = "To date cannot be before from date"
-				return message	
+				response = [] 
+				msg = {
+					"error": True,
+					"message": "To date cannot be before from date"
+				}
+				response.append(msg)
+				return response
 		else:
-			message = "Leaves Not Allocated"
-			return message
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "Leaves Not Allocated"
+			}
+			response.append(msg)
+			return response
 
 @frappe.whitelist()
 def requisition_request(args):
@@ -141,9 +208,14 @@ def requisition_request(args):
 					"items_details": i.get("items_details")
 				})
 		req.save(ignore_permissions=True)
-	
-		message = "Requisition Request Submitted successfully"
-		return message
+
+		response = [] 
+		msg = {
+			"error": False,
+			"message": "Requisition Request Submitted successfully"
+		}
+		response.append(msg)
+		return response
 
 
 @frappe.whitelist()
@@ -160,11 +232,21 @@ def update_personal_info(args):
 			doc.permanent_accommodation_type = i.get("permanent_address_type")
 			doc.save(ignore_permissions=True)
 
-			message = "Record Updated successfully"
-			return message
+			response = [] 
+			msg = {
+				"error": False,
+				"message": "Record Updated successfully"
+			}
+			response.append(msg)
+			return response
 		else:
-			message = "Employee Not Exist"
-			return message					
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "Employee Not Exist"
+			}
+			response.append(msg)
+			return response					
 
 
 @frappe.whitelist()
@@ -187,15 +269,29 @@ def overtime_entry(args):
 						})
 				overtime.save(ignore_permissions=True)
 
-				message = "Overtime record entered successfully"
-				return message		
-			
+				response = [] 
+				msg = {
+					"error": False,
+					"message": "Overtime record entered successfully"
+				}
+				response.append(msg)
+				return response
 			else:
-				message = "Overtime record already exit of same date and time"
-				return message
+				response = [] 
+				msg = {
+					"error": True,
+					"message": "Overtime record already exit of same date and time"
+				}
+				response.append(msg)
+				return response
 		else:
-			message = "Employee Not Exist"
-			return message
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "Employee Not Exist"
+			}
+			response.append(msg)
+			return response
 
 @frappe.whitelist()
 def driver_checkin_out(args):
@@ -213,32 +309,62 @@ def driver_checkin_out(args):
 					doc = frappe.get_doc(i)
 					doc.save(ignore_permissions=True)
 					if doc.name:
-						message = "Driver CheckIN Record Entered successfully"
-						return message
+						response = [] 
+						msg = {
+							"error": False,
+							"message": "Driver CheckIN Record Entered successfully"
+						}
+						response.append(msg)
+						return response
 				else:
-					message = "First CheckOut and then CheckIn"
-					return message
+					response = [] 
+					msg = {
+						"error": True,
+						"message": "First CheckOut and then CheckIn"
+					}
+					response.append(msg)
+					return response
 			elif log_type == "OUT":	
 				if log_type == "OUT" and last_doc and last_doc.log_type == "IN":
 					i['doctype'] = 'Driver CheckIn-Out'
 					doc = frappe.get_doc(i)
 					doc.save(ignore_permissions=True)
 					if doc.name:
-						message = "Driver CheckOut Record Entered successfully"
-						return message
+						response = [] 
+						msg = {
+							"error": False,
+							"message": "Driver CheckOut Record Entered successfully"
+						}
+						response.append(msg)
+						return response
 				else:
-					message = "First CheckIn and then CheckOut"
-					return message
+					response = [] 
+					msg = {
+						"error": True,
+						"message": "First CheckIn and then CheckOut"
+					}
+					response.append(msg)
+					return response
 		elif log_type == "OUT":
 			i['doctype'] = 'Driver CheckIn-Out'
 			doc = frappe.get_doc(i)
 			doc.save(ignore_permissions=True)
 			if doc.name:
-				message = "Driver CheckOut Record Entered successfully"
-				return message
+				response = [] 
+				msg = {
+					"error": False,
+					"message": "Driver CheckOut Record Entered successfully"
+				}
+				response.append(msg)
+				return response
 		else:
-			message = "First CheckOut and Then CheckIn"
-			return message
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "First CheckOut and Then CheckIn"
+			}
+			response.append(msg)
+			return response
 
 
 @frappe.whitelist()
@@ -285,11 +411,18 @@ def attendance_list(employee,month_start_date=None,month_end_date=None):
 		# Execute the SQL query
 		attendance_records = frappe.db.sql(sql_query, query_params, as_dict=True)
 
-	if attendance_records:			  
+	if attendance_records:
+		for row in attendance_records:
+			row["error"] = False			  
 		return attendance_records
 	else:
-		message = "Attendance Records Does not exist"
-		return message
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Attendance Records Does not exist"
+		}
+		response.append(msg)
+		return response
 
 @frappe.whitelist()
 def overtime_list(employee,month_start_date=None,month_end_date=None):
@@ -335,11 +468,18 @@ def overtime_list(employee,month_start_date=None,month_end_date=None):
 		# Execute the SQL query
 		overtime_records = frappe.db.sql(sql_query, query_params, as_dict=True)
 
-	if overtime_records:			  
+	if overtime_records:
+		for row in overtime_records:
+			row["error"] = False			  
 		return overtime_records
 	else:
-		message = "Overtime Records Does not exist"
-		return message
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Overtime Records Does not exist"
+		}
+		response.append(msg)
+		return response
 
 @frappe.whitelist()
 def requisition_list(employee,month_start_date=None,month_end_date=None):
@@ -402,11 +542,18 @@ def requisition_list(employee,month_start_date=None,month_end_date=None):
 			item_details = frappe.db.sql(sql_query, query_params, as_dict=True)
 
 			rr["items"] = item_details
+			rr["error"] = False
 
 		return requisition_records
 	else:
-		message = "Requisition Records Does not exist"
-		return message
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Requisition Records Does not exist"
+		}
+		response.append(msg)
+		return response
+
 
 @frappe.whitelist()
 def salary_slip_details(employee):
@@ -442,8 +589,14 @@ def salary_slip_details(employee):
 			salary_components = frappe.db.sql(sql_query, query_params, as_dict=True)
 
 			sl["components"] = salary_components
+			sl["error"] = False
 
 		return slip_records
 	else:
-		message = "Salary Slip Records Does not exist"
-		return message
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Salary Slip Records Does not exist"
+		}
+		response.append(msg)
+		return response

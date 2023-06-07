@@ -1,0 +1,499 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "naming_series:",
+ "color": "Blue",
+ "creation": "2023-05-31 19:18:20.526918",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "main_tab",
+  "naming_series",
+  "quotation",
+  "services",
+  "column_break_2",
+  "ops_no",
+  "column_break_4",
+  "sdo_no",
+  "column_break_6",
+  "mjs_no",
+  "section_break_9",
+  "date",
+  "bl_surrendered",
+  "column_break_10",
+  "job_status",
+  "job_done",
+  "column_break_14",
+  "container_no",
+  "section_break_16",
+  "customer",
+  "shipper",
+  "cnee",
+  "column_break_18",
+  "package",
+  "container_remarks",
+  "weight_in_tons",
+  "marking",
+  "column_break_20",
+  "link_21",
+  "data_26",
+  "m3",
+  "description",
+  "section_break_22",
+  "mbl_no",
+  "hbl",
+  "vesselflight",
+  "eta",
+  "goods_status",
+  "imno",
+  "un",
+  "column_break_39",
+  "description_detail",
+  "container_detail",
+  "transport_tab",
+  "transport_detail",
+  "billing_tab",
+  "job_sheet_billing",
+  "section_break_45",
+  "cash_bill",
+  "bill_sur",
+  "column_break_46",
+  "hbl2",
+  "column_break_48",
+  "received_from",
+  "receipt_1_section",
+  "cash_bill_date",
+  "receipt_no_1",
+  "received_amount_1",
+  "received_by_1",
+  "receipt_1_column",
+  "data_58",
+  "receipt_no_2",
+  "received_amount_2",
+  "received_by_2",
+  "column_break_60",
+  "cheque_no",
+  "for_accounts_section",
+  "invoice_no",
+  "invoice_no_2",
+  "invoice_delivered",
+  "column_break_66",
+  "invoice_date_1",
+  "invoice_date_2",
+  "f_paid",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "main_tab",
+   "fieldtype": "Tab Break",
+   "label": "Main"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "JS-.YY.-.#####"
+  },
+  {
+   "fieldname": "quotation",
+   "fieldtype": "Link",
+   "label": "Quotation",
+   "options": "Quotation"
+  },
+  {
+   "fieldname": "services",
+   "fieldtype": "Link",
+   "label": "Services",
+   "options": "Services"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ops_no",
+   "fieldtype": "Data",
+   "label": "OPS No"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sdo_no",
+   "fieldtype": "Data",
+   "label": "SDO NO"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mjs_no",
+   "fieldtype": "Data",
+   "label": "MJS No"
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "bl_surrendered",
+   "fieldtype": "Check",
+   "label": "BL Surrendered"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_status",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job Status",
+   "options": "Job Sheet Status",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "job_done",
+   "fieldtype": "Check",
+   "label": "Job Done"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "container_no",
+   "fieldtype": "Data",
+   "label": "Container No."
+  },
+  {
+   "fieldname": "section_break_16",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Bill to",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Link",
+   "label": "Shipper",
+   "options": "Third Party - Services"
+  },
+  {
+   "fieldname": "cnee",
+   "fieldtype": "Link",
+   "label": "C'Nee",
+   "options": "Third Party - Services"
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "package",
+   "fieldtype": "Data",
+   "label": "Package"
+  },
+  {
+   "fieldname": "container_remarks",
+   "fieldtype": "Data",
+   "label": "Container Remarks"
+  },
+  {
+   "fieldname": "weight_in_tons",
+   "fieldtype": "Data",
+   "label": "Weight in tons"
+  },
+  {
+   "fieldname": "marking",
+   "fieldtype": "Data",
+   "label": "Marking"
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "link_21",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "data_26",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "m3",
+   "fieldtype": "Data",
+   "label": "M3"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
+  },
+  {
+   "fieldname": "section_break_22",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "mbl_no",
+   "fieldtype": "Data",
+   "label": "MBL No"
+  },
+  {
+   "fieldname": "hbl",
+   "fieldtype": "Data",
+   "label": "HBL "
+  },
+  {
+   "fieldname": "vesselflight",
+   "fieldtype": "Data",
+   "label": "Vessel/Flight"
+  },
+  {
+   "fieldname": "eta",
+   "fieldtype": "Date",
+   "label": "ETA"
+  },
+  {
+   "fieldname": "goods_status",
+   "fieldtype": "Link",
+   "label": "Goods Status",
+   "options": "Goods Status"
+  },
+  {
+   "fieldname": "imno",
+   "fieldtype": "Data",
+   "label": "IMNO "
+  },
+  {
+   "fieldname": "un",
+   "fieldtype": "Data",
+   "label": "UN"
+  },
+  {
+   "fieldname": "column_break_39",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "description_detail",
+   "fieldtype": "Table",
+   "label": "Description Detail",
+   "options": "Job Sheet Description Detail"
+  },
+  {
+   "fieldname": "container_detail",
+   "fieldtype": "Table",
+   "label": "Containers Detail",
+   "options": "Container Detail"
+  },
+  {
+   "fieldname": "transport_tab",
+   "fieldtype": "Tab Break",
+   "label": "Transport"
+  },
+  {
+   "fieldname": "transport_detail",
+   "fieldtype": "Table",
+   "label": "Transport Detail",
+   "options": "Transport"
+  },
+  {
+   "fieldname": "billing_tab",
+   "fieldtype": "Tab Break",
+   "label": "Billing"
+  },
+  {
+   "fieldname": "job_sheet_billing",
+   "fieldtype": "Table",
+   "label": "Job Sheet Billing",
+   "options": "Job Sheet Billing"
+  },
+  {
+   "fieldname": "section_break_45",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "cash_bill",
+   "fieldtype": "Check",
+   "label": "Cash Bill"
+  },
+  {
+   "default": "0",
+   "fieldname": "bill_sur",
+   "fieldtype": "Check",
+   "label": "Bill Surc"
+  },
+  {
+   "fieldname": "column_break_46",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hbl2",
+   "fieldtype": "Data",
+   "label": "HBL2"
+  },
+  {
+   "fieldname": "column_break_48",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "received_from",
+   "fieldtype": "Link",
+   "label": "Received From",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "receipt_1_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cash_bill_date",
+   "fieldtype": "Date",
+   "label": "Cash Bill Date"
+  },
+  {
+   "fieldname": "receipt_no_1",
+   "fieldtype": "Data",
+   "label": "Receipt No 1"
+  },
+  {
+   "fieldname": "received_amount_1",
+   "fieldtype": "Data",
+   "label": "Received Amount 1"
+  },
+  {
+   "fieldname": "received_by_1",
+   "fieldtype": "Data",
+   "label": "Received By 1"
+  },
+  {
+   "fieldname": "receipt_1_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "data_58",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "receipt_no_2",
+   "fieldtype": "Data",
+   "label": "Receipt No 2"
+  },
+  {
+   "fieldname": "received_amount_2",
+   "fieldtype": "Data",
+   "label": "Received Amount 2"
+  },
+  {
+   "fieldname": "received_by_2",
+   "fieldtype": "Data",
+   "label": "Received By 2"
+  },
+  {
+   "fieldname": "column_break_60",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cheque_no",
+   "fieldtype": "Data",
+   "label": "Cheque No"
+  },
+  {
+   "fieldname": "for_accounts_section",
+   "fieldtype": "Section Break",
+   "label": "For Accounts"
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Data",
+   "label": "Invoice No"
+  },
+  {
+   "fieldname": "invoice_no_2",
+   "fieldtype": "Data",
+   "label": "Invoice No 2"
+  },
+  {
+   "fieldname": "invoice_delivered",
+   "fieldtype": "Data",
+   "label": "Invoice Delivered"
+  },
+  {
+   "fieldname": "column_break_66",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_date_1",
+   "fieldtype": "Date",
+   "label": "Invoice Date 1"
+  },
+  {
+   "fieldname": "invoice_date_2",
+   "fieldtype": "Date",
+   "label": "Invoice Date 2"
+  },
+  {
+   "fieldname": "f_paid",
+   "fieldtype": "Data",
+   "label": "F Paid"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Job Sheet",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-06-07 16:35:00.552227",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Job Sheet",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

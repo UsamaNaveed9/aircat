@@ -46,11 +46,6 @@
    "label": "Amount"
   },
   {
-   "fieldname": "rm",
-   "fieldtype": "Date",
-   "label": "RM"
-  },
-  {
    "default": "0",
    "fieldname": "t1",
    "fieldtype": "Check",
@@ -73,12 +68,17 @@
    "fieldtype": "Link",
    "label": "Description",
    "options": "Billing Charges"
+  },
+  {
+   "fieldname": "rm",
+   "fieldtype": "Currency",
+   "label": "RM"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-06-01 12:39:27.354263",
+ "modified": "2023-06-07 16:34:18.025147",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Job Sheet Billing",
