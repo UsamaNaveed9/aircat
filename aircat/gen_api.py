@@ -1,6 +1,7 @@
 import frappe
 from frappe.utils.password import get_decrypted_password
 from frappe.utils import today, get_first_day, get_last_day, getdate
+from datetime import date, timedelta, datetime
 
 @frappe.whitelist()
 def get_employee_master():
@@ -390,6 +391,26 @@ def attendance_list(employee,month_start_date=None,month_end_date=None):
 
 		# Execute the SQL query
 		attendance_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+		
+		for row in attendance_records:
+			sql_query = """
+					SELECT `log_type`,`shift`,`time`, `device_id`, `officein_lat`,`officein_long`,`officein_address`,`officein_comment`
+					FROM `tabEmployee Checkin`
+					WHERE `date` = %(date)s
+					AND `employee` = %(employee)s
+					"""
+
+			# Prepare the query parameters
+			query_params = {
+				'date': row["attendance_date"],
+				'employee': row["employee"]
+			}
+
+			officein_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+			row["officein_out"] = officein_records
+
+
 	else:
 		start_date = month_start_date
 		end_date = month_end_date
@@ -410,6 +431,24 @@ def attendance_list(employee,month_start_date=None,month_end_date=None):
 
 		# Execute the SQL query
 		attendance_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+		for row in attendance_records:
+			sql_query = """
+					SELECT `log_type`,`shift`,`time`, `device_id`, `officein_lat`,`officein_long`,`officein_address`,`officein_comment`
+					FROM `tabEmployee Checkin`
+					WHERE `date` = %(date)s
+					AND `employee` = %(employee)s
+					"""
+
+			# Prepare the query parameters
+			query_params = {
+				'date': row["attendance_date"],
+				'employee': row["employee"]
+			}
+
+			officein_records = frappe.db.sql(sql_query, query_params, as_dict=True)
+
+			row["officein_out"] = officein_records
 
 	if attendance_records:
 		for row in attendance_records:
@@ -600,3 +639,123 @@ def salary_slip_details(employee):
 		}
 		response.append(msg)
 		return response
+
+
+@frappe.whitelist()
+def stats(employee,month_start_date=None,month_end_date=None):
+	if not month_start_date and not month_end_date:
+		current_date = today()
+		start_date = get_first_day(current_date)
+		end_date = get_last_day(current_date)
+
+		def count_working_days(start_date, end_date):
+			total_days = (end_date - start_date).days + 1
+			working_days = 0
+
+			for i in range(total_days):
+				current_date = start_date + timedelta(days=i)
+				if current_date.weekday() != 6:  # 6 represents Sunday (Monday is 0)
+					working_days += 1
+
+			return working_days
+
+		total_working_days = count_working_days(start_date, end_date)
+
+		sql_query = """
+					SELECT count(name)
+					FROM `tabAttendance`
+					WHERE `attendance_date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s AND `status` = %(status)s AND docstatus = 1
+					"""
+
+		# Prepare the query parameters
+		query_pr = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee,
+			'status': 'Present'
+		}
+
+		# Execute the SQL query
+		present_days = frappe.db.sql(sql_query, query_pr)
+
+		query_ab = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee,
+			'status': 'Absent'
+		}
+
+		absent_days = frappe.db.sql(sql_query, query_ab)
+
+		query_le = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee,
+			'status': 'On Leave'
+		}
+
+		leave_days = frappe.db.sql(sql_query, query_ab)
+	else:
+		start_date = datetime.strptime(month_start_date, '%Y-%m-%d').date()
+		end_date = datetime.strptime(month_end_date, '%Y-%m-%d').date()
+
+		def count_working_days(start_date, end_date):
+			total_days = (end_date - start_date).days + 1
+			working_days = 0
+
+			for i in range(total_days):
+				current_date = start_date + timedelta(days=i)
+				if current_date.weekday() != 6:  # 6 represents Sunday (Monday is 0)
+					working_days += 1
+
+			return working_days
+
+		total_working_days = count_working_days(start_date, end_date)
+
+		sql_query = """
+					SELECT count(name)
+					FROM `tabAttendance`
+					WHERE `attendance_date` BETWEEN %(start_date)s AND %(end_date)s
+					AND `employee` = %(employee)s AND `status` = %(status)s AND docstatus = 1
+					"""
+
+		# Prepare the query parameters
+		query_pr = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee,
+			'status': 'Present'
+		}
+
+		# Execute the SQL query
+		present_days = frappe.db.sql(sql_query, query_pr)
+
+		query_ab = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee,
+			'status': 'Absent'
+		}
+
+		absent_days = frappe.db.sql(sql_query, query_ab)
+
+		query_le = {
+			'start_date': start_date,
+			'end_date': end_date,
+			'employee': employee,
+			'status': 'On Leave'
+		}
+
+		leave_days = frappe.db.sql(sql_query, query_ab)
+
+	response = []
+	msg = {
+		"error": False,
+		"total_working_days": total_working_days,
+		"present_days": present_days[0][0],
+		"absent_days": absent_days[0][0],
+		"leave_days": leave_days[0][0]
+	}
+	response.append(msg)
+	return response
