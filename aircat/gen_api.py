@@ -23,7 +23,8 @@ def login(company_email,password):
 			plain_text_password = get_decrypted_password("Employee", e.name, "new_password", hash_password)
 
 		if plain_text_password == password:
-			employee_data = frappe.db.sql('''select name,employee_name,gender,status,company_email,cell_number,shift_start_time,shift_end_time
+			employee_data = frappe.db.sql('''select name,employee_name,gender,status,company_email,cell_number,shift_start_time,shift_end_time,
+											personal_email,current_address,current_accommodation_type,permanent_address,permanent_accommodation_type
 								from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
 			for row in employee_data:
 				row["error"] = False
@@ -53,69 +54,96 @@ def employee_checkin(args):
 		log_type = i.get("log_type")
 		employee = i.get("employee")
 		date = i.get("date")
-		if log_type == "IN":
-			if log_type == "IN" and not frappe.db.exists("Employee Checkin", {"employee": employee, "date": date, "log_type": "IN"}):
-				i['doctype'] = 'Employee Checkin'
-				doc = frappe.get_doc(i)
-				doc.save()
-				if doc.name:
-					attendance = frappe.get_doc({
-							"doctype": "Attendance",
-							"employee": i.get("employee"),
-							"attendance_date": i.get("date"),
-							"status": "Present"
-						})
-					attendance.save(ignore_permissions=True)
-					attendance.submit()
 
-					doc.attendance = attendance.name
-					doc.save(ignore_permissions=True)
-
-					response = [] 
-					msg = {
-						"error": False,
-						"message": "Office IN and Attendance Entered successfully"
-					}
-					response.append(msg)
-					return response
-			else:
-				response = [] 
-				msg = {
-					"error": True,
-					"message": "OfficeIn Record Exist Already"
-				}
-				response.append(msg)
-				return response
-		elif log_type == "OUT":
-			if log_type == "OUT" and frappe.db.exists("Employee Checkin", {"employee": employee, "date": date, "log_type": "IN"}):
-				if not frappe.db.exists("Employee Checkin", {"employee": employee, "date": date, "log_type": "OUT"}):
-					i['doctype'] = 'Employee Checkin'
-					doc = frappe.get_doc(i)
-					doc.save()
-					if doc.name:
+		count =	frappe.db.count("Employee Checkin",filters={"date": date},debug=False)
+		if count < 4:
+			if frappe.db.exists("Employee Checkin", {"employee": employee, "date": date}):
+				last_doc = frappe.get_last_doc('Employee Checkin', filters={"employee": employee, "date": date})
+			
+				if log_type == "IN":
+					if log_type == "IN" and last_doc and last_doc.log_type == "OUT":
+						i['doctype'] = 'Employee Checkin'
+						doc = frappe.get_doc(i)
+						doc.save(ignore_permissions=True)
+						if doc.name:
+							response = [] 
+							msg = {
+								"error": False,
+								"message": "Employee OfficeIn Record Entered successfully"
+							}
+							response.append(msg)
+							return response
+					else:
 						response = [] 
 						msg = {
-							"error": False,
-							"message": "Office Out Record Entered successfully"
+							"error": True,
+							"message": "First OfficeOut and then OfficeIn"
 						}
 						response.append(msg)
 						return response
-				else:
-					response = [] 
-					msg = {
-						"error": True,
-						"message": "Office Out Record Exist Already"
-					}
-					response.append(msg)
-					return response			
+				elif log_type == "OUT":	
+					if log_type == "OUT" and last_doc and last_doc.log_type == "IN":
+						i['doctype'] = 'Employee Checkin'
+						doc = frappe.get_doc(i)
+						doc.save(ignore_permissions=True)
+						if doc.name:
+							response = [] 
+							msg = {
+								"error": False,
+								"message": "Employee OfficeOut Record Entered successfully"
+							}
+							response.append(msg)
+							return response
+					else:
+						response = [] 
+						msg = {
+							"error": True,
+							"message": "First OfficeIn and then OfficeOut"
+						}
+						response.append(msg)
+						return response
+			elif log_type == "IN":
+				i['doctype'] = 'Employee Checkin'
+				doc = frappe.get_doc(i)
+				doc.save(ignore_permissions=True)
+				if doc.name:
+						attendance = frappe.get_doc({
+								"doctype": "Attendance",
+								"employee": i.get("employee"),
+								"attendance_date": i.get("date"),
+								"status": "Present"
+							})
+						attendance.save(ignore_permissions=True)
+						attendance.submit()
+
+						doc.attendance = attendance.name
+						doc.save(ignore_permissions=True)
+
+						response = [] 
+						msg = {
+							"error": False,
+							"message": "Office IN and Attendance Entered successfully"
+						}
+						response.append(msg)
+						return response
 			else:
 				response = [] 
 				msg = {
 					"error": True,
-					"message": "OfficeIn Record Doesn't Exist"
+					"message": "First OfficeIn then OfficeIn"
 				}
 				response.append(msg)
 				return response
+		else:
+			response = [] 
+			msg = {
+				"error": True,
+				"message": "Meet the OfficeIn-Out Day Limit"
+			}
+			response.append(msg)
+			return response
+
+
 
 @frappe.whitelist()
 def employee_allocated_leaves(employee_id):
@@ -225,7 +253,7 @@ def update_personal_info(args):
 		employee_id = i.get("employee")
 		if frappe.db.exists("Employee", {"name": employee_id}):
 			doc = frappe.get_doc("Employee", employee_id)
-			doc.cell_number = i.get("mobile_no")
+			doc.cell_number = i.get("cell_number")
 			doc.personal_email = i.get("personal_email")
 			doc.current_address = i.get("current_address")
 			doc.current_accommodation_type = i.get("current_address_type")
