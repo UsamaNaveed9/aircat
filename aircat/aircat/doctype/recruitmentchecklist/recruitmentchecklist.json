@@ -20,6 +20,7 @@
   {
    "fieldname": "name1",
    "fieldtype": "Small Text",
+   "in_list_view": 1,
    "label": " Name"
   },
   {
@@ -30,6 +31,7 @@
    "default": "0",
    "fieldname": "yes",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": " YES"
   },
   {
@@ -40,6 +42,7 @@
    "default": "0",
    "fieldname": "no",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "NO"
   },
   {
@@ -50,23 +53,26 @@
    "default": "0",
    "fieldname": "na",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "N/A"
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Small Text",
+   "in_list_view": 1,
    "label": " Remarks"
   },
   {
    "fieldname": "admin_section",
    "fieldtype": "Small Text",
+   "in_list_view": 1,
    "label": "Admin Section"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-05-26 11:41:55.119103",
+ "modified": "2023-06-20 14:52:06.604228",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "RecruitmentChecklist",

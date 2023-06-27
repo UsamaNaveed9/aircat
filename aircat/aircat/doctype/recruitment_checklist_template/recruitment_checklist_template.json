@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:template_name",
+ "creation": "2023-06-20 14:49:14.897613",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "template_name",
+  "details_section",
+  "new_employee_process",
+  "distribution_of_item",
+  "onboarding_process",
+  "exit_process"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "label": "Template Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "bold": 1,
+   "fieldname": "new_employee_process",
+   "fieldtype": "Table",
+   "label": "New Employee Process",
+   "options": "RecruitmentChecklist"
+  },
+  {
+   "bold": 1,
+   "fieldname": "distribution_of_item",
+   "fieldtype": "Table",
+   "label": "Distribution of Item",
+   "options": "RecruitmentChecklist"
+  },
+  {
+   "bold": 1,
+   "fieldname": "onboarding_process",
+   "fieldtype": "Table",
+   "label": "Onboarding Process",
+   "options": "RecruitmentChecklist"
+  },
+  {
+   "bold": 1,
+   "fieldname": "exit_process",
+   "fieldtype": "Table",
+   "label": "Exit Process",
+   "options": "RecruitmentChecklist"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-06-20 14:57:56.003830",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Recruitment Checklist Template",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

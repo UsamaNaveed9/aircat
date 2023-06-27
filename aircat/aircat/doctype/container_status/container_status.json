@@ -1,0 +1,205 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2023-06-27 13:17:27.966680",
+ "default_view": "List",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "report_date",
+  "column_break_4",
+  "reference_type",
+  "reference_name",
+  "section_break_7",
+  "container_number",
+  "seal_number",
+  "condition_of_cargo",
+  "column_break_10",
+  "arrive_date_and_time",
+  "drivertransport_by",
+  "return_detail_section",
+  "unloading_completed",
+  "return_date_and_time",
+  "column_break_17",
+  "approval_to_release",
+  "section_break_14",
+  "inspected_by",
+  "verified_by",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "MAT-QA-.YYYY.-",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "report_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Report Date",
+   "oldfieldname": "report_date",
+   "oldfieldtype": "Date",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Select",
+   "label": "Reference Type",
+   "options": "\nPurchase Receipt\nPurchase Invoice\nDelivery Note\nSales Invoice\nStock Entry\nJob Card"
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "in_global_search": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Reference Name",
+   "oldfieldname": "purchase_receipt_no",
+   "oldfieldtype": "Link",
+   "options": "reference_type"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break",
+   "label": "Arriving Detail"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "user",
+   "fieldname": "inspected_by",
+   "fieldtype": "Link",
+   "label": "Inspected By",
+   "oldfieldname": "inspected_by",
+   "oldfieldtype": "Data",
+   "options": "User"
+  },
+  {
+   "fieldname": "verified_by",
+   "fieldtype": "Data",
+   "label": "Verified By",
+   "oldfieldname": "verified_by",
+   "oldfieldtype": "Data"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks",
+   "no_copy": 1,
+   "oldfieldname": "remarks",
+   "oldfieldtype": "Text"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Container Status",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "container_number",
+   "fieldtype": "Data",
+   "label": "Container Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "seal_number",
+   "fieldtype": "Data",
+   "label": "SEAL Number"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "arrive_date_and_time",
+   "fieldtype": "Datetime",
+   "label": "Arrive Date and Time"
+  },
+  {
+   "fieldname": "drivertransport_by",
+   "fieldtype": "Data",
+   "label": "Driver/Transport by"
+  },
+  {
+   "fieldname": "return_detail_section",
+   "fieldtype": "Section Break",
+   "label": "Return Detail"
+  },
+  {
+   "fieldname": "condition_of_cargo",
+   "fieldtype": "Data",
+   "label": "Condition of Cargo"
+  },
+  {
+   "default": "0",
+   "fieldname": "unloading_completed",
+   "fieldtype": "Check",
+   "label": "Unloading Completed "
+  },
+  {
+   "fieldname": "return_date_and_time",
+   "fieldtype": "Datetime",
+   "label": "Return Date and Time"
+  },
+  {
+   "default": "0",
+   "fieldname": "approval_to_release",
+   "fieldtype": "Check",
+   "label": "Approval to release"
+  }
+ ],
+ "icon": "fa fa-search",
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-06-27 13:29:09.577527",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Container Status",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Quality Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "show_name_in_global_search": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "states": []
+}

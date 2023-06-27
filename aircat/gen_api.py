@@ -55,7 +55,7 @@ def employee_checkin(args):
 		employee = i.get("employee")
 		date = i.get("date")
 
-		count =	frappe.db.count("Employee Checkin",filters={"date": date},debug=False)
+		count =	frappe.db.count("Employee Checkin",filters={"employee": employee, "date": date},debug=False)
 		if count < 4:
 			if frappe.db.exists("Employee Checkin", {"employee": employee, "date": date}):
 				last_doc = frappe.get_last_doc('Employee Checkin', filters={"employee": employee, "date": date})
