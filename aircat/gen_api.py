@@ -24,9 +24,11 @@ def login(company_email,password):
 
 		if plain_text_password == password:
 			employee_data = frappe.db.sql('''select name,employee_name,gender,status,company_email,cell_number,shift_start_time,shift_end_time,
-											personal_email,current_address,current_accommodation_type,permanent_address,permanent_accommodation_type
+											personal_email,current_address,current_accommodation_type,permanent_address,
+											permanent_accommodation_type,image as image_link
 								from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
 			for row in employee_data:
+				row["image_link"] = "https://aircat.oneerp.com.my"+row["image_link"]
 				row["error"] = False
 			return employee_data
 

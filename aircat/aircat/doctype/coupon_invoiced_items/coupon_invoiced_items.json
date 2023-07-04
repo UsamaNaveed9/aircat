@@ -6,12 +6,15 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "booklet",
   "coupon_issue",
+  "issue_serial_no",
   "amount",
   "alter_amount"
  ],
  "fields": [
   {
+   "columns": 2,
    "fieldname": "coupon_issue",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -19,6 +22,7 @@
    "options": "Coupon Issue"
   },
   {
+   "columns": 2,
    "fetch_from": "coupon_issue.issued_amount",
    "fieldname": "amount",
    "fieldtype": "Currency",
@@ -26,16 +30,33 @@
    "label": "Amount"
   },
   {
+   "columns": 2,
    "fieldname": "alter_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Alter Amount"
+  },
+  {
+   "columns": 2,
+   "fieldname": "booklet",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "BookLet",
+   "options": "BookLet"
+  },
+  {
+   "columns": 2,
+   "fetch_from": "coupon_issue.issue_serial_number",
+   "fieldname": "issue_serial_no",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Issue Serial No"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-06-26 14:38:26.225774",
+ "modified": "2023-07-04 19:26:23.858851",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Coupon Invoiced Items",

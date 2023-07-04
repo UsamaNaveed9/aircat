@@ -13,7 +13,7 @@ frappe.ui.form.on("Salary Slip", {
                     if(r.message) {
                         let earnings = r.message[0];
                         let deductions = r.message[1];
-                        console.log(earnings,deductions);
+                        //console.log(earnings,deductions);
                         cur_frm.clear_table("earnings");
                         cur_frm.clear_table("deductions");
                         for (let i = 0; i < earnings.length; i++){

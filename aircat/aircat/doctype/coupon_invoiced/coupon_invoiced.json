@@ -37,12 +37,12 @@
   {
    "fieldname": "booklet",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_global_search": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "BookLet",
-   "options": "BookLet",
-   "reqd": 1
+   "options": "BookLet"
   },
   {
    "fieldname": "date_of_invoice",
@@ -74,7 +74,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-06 14:54:47.928373",
+ "modified": "2023-07-04 18:57:19.531071",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "Coupon Invoiced",
