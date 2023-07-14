@@ -115,7 +115,7 @@ doctype_js = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 #	"all": [
 #		"aircat.tasks.all"
 #	],
@@ -131,7 +131,18 @@ doctype_js = {
 #	"monthly": [
 #		"aircat.tasks.monthly"
 #	],
-# }
+    "cron": {
+		"45 7 * * 1-6": [
+			"aircat.gen_api.send_notification_toall"
+		],
+        "01 8 * * 1-6": [
+			"aircat.gen_api.send_notification_after_eight"
+		],
+        "16 8 * * 1-6": [
+			"aircat.gen_api.send_notification_after_eight15"
+		],
+	}
+}
 
 # Testing
 # -------

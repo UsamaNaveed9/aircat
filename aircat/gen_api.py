@@ -2,6 +2,8 @@ import frappe
 from frappe.utils.password import get_decrypted_password
 from frappe.utils import today, get_first_day, get_last_day, getdate
 from datetime import date, timedelta, datetime
+import requests
+import json
 
 @frappe.whitelist()
 def get_employee_master():
@@ -14,7 +16,7 @@ def get_employee_master():
 	return employees
 
 @frappe.whitelist()
-def login(company_email,password):
+def login(company_email,password,player_id=None):
 	if frappe.db.exists("Employee", {"company_email": company_email}):
 		emp = frappe.db.sql('''select name,company_email,new_password
 							from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
@@ -30,6 +32,13 @@ def login(company_email,password):
 			for row in employee_data:
 				row["image_link"] = "https://aircat.oneerp.com.my"+row["image_link"]
 				row["error"] = False
+				
+				if player_id:
+					doc = frappe.get_doc("Employee", row["name"] )
+					doc.player_id = player_id
+					doc.save(ignore_permissions=True)
+
+
 			return employee_data
 
 		else:
@@ -95,6 +104,26 @@ def employee_checkin(args):
 								"message": "Employee OfficeOut Record Entered successfully"
 							}
 							response.append(msg)
+
+							emp_doc = frappe.get_doc('Employee', employee)
+							players = []
+							players.append(emp_doc.player_id)
+
+							header = {"Accept": "application/json",
+									"Authorization": "Basic MmFkMWNmYWYtMGJjNy00NmQ3LTlkNDItZTgyNTg0MjhjY2Yz",
+									"Content-Type": "application/json"
+									}
+
+							payload = {"app_id": "6f3dd902-8546-45ac-922a-0d272d0d575b",
+										#"included_segments": ["Subscribed Users"],
+										"include_player_ids": players,
+										"contents": {"en": "Have a great Lunch","es": "Spanish Message",},
+										"name": "New",
+										"data": {"url": "/home",}
+									}
+								
+							requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+							
 							return response
 					else:
 						response = [] 
@@ -789,3 +818,90 @@ def stats(employee,month_start_date=None,month_end_date=None):
 	}
 	response.append(msg)
 	return response
+
+
+@frappe.whitelist()
+def send_notification_toall():
+	header = {"Accept": "application/json",
+			  "Authorization": "Basic MmFkMWNmYWYtMGJjNy00NmQ3LTlkNDItZTgyNTg0MjhjY2Yz",
+			  "Content-Type": "application/json"
+			}
+
+	payload = {"app_id": "6f3dd902-8546-45ac-922a-0d272d0d575b",
+				"included_segments": ["Subscribed Users"],
+				#"include_player_ids": players,
+				"contents": {"en": "15mins more report to work","es": "Spanish Message",},
+				"name": "New",
+				"data": {"url": "/home",}
+			}
+		
+	requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+
+@frappe.whitelist()
+def send_notification_after_eight():
+	get_employees = frappe.db.get_list('Employee',
+		filters={
+			'status': 'Active'
+		},
+		fields=['name','player_id']
+	)
+	players = []
+	current_date = today()
+	for i in get_employees:
+		if not frappe.db.exists("Attendance", {"employee": i.name, "attendance_date": current_date}):
+			players.append(i.player_id)
+
+	header = {"Accept": "application/json",
+			  "Authorization": "Basic MmFkMWNmYWYtMGJjNy00NmQ3LTlkNDItZTgyNTg0MjhjY2Yz",
+			  "Content-Type": "application/json"
+			}
+
+	payload = {"app_id": "6f3dd902-8546-45ac-922a-0d272d0d575b",
+				# "included_segments": ["Subscribed Users"],
+				"include_player_ids": players,
+				"contents": {"en": "You are late for office IN","es": "Spanish Message",},
+				"name": "New",
+				"data": {"url": "/home",}
+			}
+		
+	requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+
+@frappe.whitelist()
+def send_notification_after_eight15():
+	get_employees = frappe.db.get_list('Employee',
+		filters={
+			'status': 'Active'
+		},
+		fields=['name','player_id']
+	)
+	players = []
+	current_date = today()
+	for i in get_employees:
+		if not frappe.db.exists("Attendance", {"employee": i.name, "attendance_date": current_date}):
+			players.append(i.player_id)
+			attendance = frappe.get_doc({
+							"doctype": "Attendance",
+							"employee": i.employee,
+							"attendance_date": current_date,
+							"status": "Absent"
+						})
+			attendance.save(ignore_permissions=True)
+			attendance.submit()
+
+
+	header = {"Accept": "application/json",
+			  "Authorization": "Basic MmFkMWNmYWYtMGJjNy00NmQ3LTlkNDItZTgyNTg0MjhjY2Yz",
+			  "Content-Type": "application/json"
+			}
+
+	payload = {"app_id": "6f3dd902-8546-45ac-922a-0d272d0d575b",
+				#"included_segments": ["Subscribed Users"],
+				"include_player_ids": players,
+				"contents": {"en": "You are absent today","es": "Spanish Message",},
+				"name": "New",
+				"data": {"url": "/home",}
+			}
+		
+	requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))	
+
+	

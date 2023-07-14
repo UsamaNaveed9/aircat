@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Drivers Log\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Transportation Log\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Petrol &amp; Diesel \",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Transportation Setting\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Vehicle Reports\",\"col\":4}}]",
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>MASTER TRANSPORTATION FOLDER</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Drivers Log\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Transportation Log\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Petrol &amp; Diesel \",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Transportation Setting\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Vehicle Reports\",\"col\":4}}]",
  "creation": "2023-04-12 14:23:53.122628",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -269,7 +269,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-07-04 17:52:14.276575",
+ "modified": "2023-07-14 11:35:47.259918",
  "modified_by": "Administrator",
  "module": "Aircat",
  "name": "TRANSPORTATION",
@@ -278,7 +278,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 20.0,
+ "sequence_id": 21.0,
  "shortcuts": [],
  "title": "TRANSPORTATION"
 }
