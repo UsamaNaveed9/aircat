@@ -30,14 +30,15 @@ def login(company_email,password,player_id=None):
 											permanent_accommodation_type,image as image_link
 								from `tabEmployee` where status = "Active" and company_email=%s; ''',(company_email),as_dict=1 )
 			for row in employee_data:
-				row["image_link"] = "https://aircat.oneerp.com.my"+row["image_link"]
+				if row["image_link"]:
+					row["image_link"] = "https://aircat.oneerp.com.my"+row["image_link"]
+
 				row["error"] = False
 				
 				if player_id:
 					doc = frappe.get_doc("Employee", row["name"] )
 					doc.player_id = player_id
 					doc.save(ignore_permissions=True)
-
 
 			return employee_data
 
@@ -77,6 +78,13 @@ def employee_checkin(args):
 						doc = frappe.get_doc(i)
 						doc.save(ignore_permissions=True)
 						if doc.name:
+							doc.attendance = last_doc.attendance
+							doc.save(ignore_permissions=True)
+
+							attend_doc = frappe.get_doc("Attendance", last_doc.attendance)
+							attend_doc.afternoon_in_time = i.get("time")
+							attend_doc.save(ignore_permissions=True)
+
 							response = [] 
 							msg = {
 								"error": False,
@@ -92,12 +100,25 @@ def employee_checkin(args):
 						}
 						response.append(msg)
 						return response
-				elif log_type == "OUT":	
+				elif log_type == "OUT":
 					if log_type == "OUT" and last_doc and last_doc.log_type == "IN":
 						i['doctype'] = 'Employee Checkin'
 						doc = frappe.get_doc(i)
 						doc.save(ignore_permissions=True)
 						if doc.name:
+							doc.attendance = last_doc.attendance
+							doc.save(ignore_permissions=True)
+
+							if count == 1:								
+								attend_doc = frappe.get_doc("Attendance", last_doc.attendance)
+								attend_doc.out_time = i.get("time")
+								attend_doc.save(ignore_permissions=True)
+							elif count == 3:
+								attend_doc = frappe.get_doc("Attendance", last_doc.attendance)
+								attend_doc.afternoon_out_time = i.get("time")
+								attend_doc.save(ignore_permissions=True)
+
+
 							response = [] 
 							msg = {
 								"error": False,
@@ -142,6 +163,7 @@ def employee_checkin(args):
 								"doctype": "Attendance",
 								"employee": i.get("employee"),
 								"attendance_date": i.get("date"),
+								"in_time": i.get("time"),
 								"status": "Present"
 							})
 						attendance.save(ignore_permissions=True)
@@ -210,35 +232,54 @@ def employee_leave_application(args):
 		employee = i.get("employee")
 		from_date = i.get("from_date")
 		to_date = i.get("to_date")
+		leave_type = i.get("leave_type")
 		if frappe.db.exists("Leave Allocation",{"employee": employee,"docstatus": 1,"from_date": ('<=', from_date),"to_date": ('>=', to_date)}):
 			if from_date and to_date and not (getdate(to_date) < getdate(from_date)):
-				if not frappe.db.exists("Leave Application", {"employee": employee, "docstatus": ('<', 2),"to_date": ('>=', from_date),"from_date":('<=', to_date)}):
-					leave = frappe.get_doc({
-								"doctype": "Leave Application",
-								"employee": i.get("employee"),
-								"leave_type": i.get("leave_type"),
-								"from_date": i.get("from_date"),
-								"to_date": i.get("to_date"),
-								"half_day": i.get("half_day"),
-								"description": i.get("description")
-							})
-					leave.save(ignore_permissions=True)
+				if frappe.db.exists("Leave Type",{"name": leave_type}):
+					if not frappe.db.exists("Attendance",{"employee": employee,"docstatus": ('<', 2),"attendance_date": ["between", [from_date, to_date]],},):
+						if not frappe.db.exists("Leave Application", {"employee": employee, "docstatus": ('<', 2),"to_date": ('>=', from_date),"from_date":('<=', to_date)}):
+							leave = frappe.get_doc({
+										"doctype": "Leave Application",
+										"employee": i.get("employee"),
+										"leave_type": i.get("leave_type"),
+										"from_date": i.get("from_date"),
+										"to_date": i.get("to_date"),
+										"half_day": i.get("half_day"),
+										"description": i.get("description")
+									})
+							leave.save(ignore_permissions=True)
 
-					response = [] 
-					msg = {
-						"error": False,
-						"message": "Leave Application is Applied"
-					}
-					response.append(msg)
-					return response
+							response = [] 
+							msg = {
+								"error": False,
+								"message": "Leave Application is Applied"
+							}
+							response.append(msg)
+							return response
+						else:
+							response = [] 
+							msg = {
+								"error": True,
+								"message": "Leave Application already applied between these dates"
+							}
+							response.append(msg)
+							return response
+					else:
+							response = [] 
+							msg = {
+								"error": True,
+								"message": "Attendance is already marked for this day"
+							}
+							response.append(msg)
+							return response
 				else:
 					response = [] 
 					msg = {
 						"error": True,
-						"message": "Leave Application already applied between these dates"
+						"message": "Leave Type: {0} is not allowed".format(leave_type)
 					}
 					response.append(msg)
-					return response
+					return response					
 			else:
 				response = [] 
 				msg = {

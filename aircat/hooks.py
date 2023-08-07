@@ -116,7 +116,21 @@ doctype_js = {
 # ---------------
 
 scheduler_events = {
-#	"all": [
+    "cron": {
+		# "*/3 * * * *": [
+		# 	"aircat.gen_api.send_notification_after_eight",
+		# ],
+		"45 7 * * 1-6": [
+			"aircat.gen_api.send_notification_toall",
+		],
+        "01 8 * * 1-6": [
+			"aircat.gen_api.send_notification_after_eight",
+		],
+        "16 8 * * 1-6": [
+			"aircat.gen_api.send_notification_after_eight15",
+		],
+	}
+	#	"all": [
 #		"aircat.tasks.all"
 #	],
 #	"daily": [
@@ -131,17 +145,6 @@ scheduler_events = {
 #	"monthly": [
 #		"aircat.tasks.monthly"
 #	],
-    "cron": {
-		"45 7 * * 1-6": [
-			"aircat.gen_api.send_notification_toall"
-		],
-        "01 8 * * 1-6": [
-			"aircat.gen_api.send_notification_after_eight"
-		],
-        "16 8 * * 1-6": [
-			"aircat.gen_api.send_notification_after_eight15"
-		],
-	}
 }
 
 # Testing

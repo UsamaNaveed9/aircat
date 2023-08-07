@@ -33,9 +33,14 @@ frappe.ui.form.on("Salary Slip", {
                                 d_comp.amount = deductions[i].amount;
                                 cur_frm.refresh_field("deductions");
                         }
-
+                        
+                        let gross_pay = 0;
+                        let total_ded = 0;
+                        frm.doc.earnings.forEach(function(d) { gross_pay += d.amount; });
+	        	        frm.set_value('gross_pay', gross_pay);
+                        frm.doc.deductions.forEach(function(d) { total_ded += d.amount; });
+	        	        frm.set_value('total_deduction', total_ded);
                         cur_frm.refresh();
-                        cur_frm.save();
                     }
                 }
             })
@@ -75,6 +80,12 @@ frappe.ui.form.on("Salary Slip", {
                                 cur_frm.refresh_field("deductions");
                         }
 
+                        let gross_pay = 0;
+                        let total_ded = 0;
+                        frm.doc.earnings.forEach(function(d) { gross_pay += d.amount; });
+	        	        frm.set_value('gross_pay', gross_pay);
+                        frm.doc.deductions.forEach(function(d) { total_ded += d.amount; });
+	        	        frm.set_value('total_deduction', total_ded);
                         cur_frm.refresh();
                     }
                 }
@@ -115,6 +126,12 @@ frappe.ui.form.on("Salary Slip", {
                                 cur_frm.refresh_field("deductions");
                         }
 
+                        let gross_pay = 0;
+                        let total_ded = 0;
+                        frm.doc.earnings.forEach(function(d) { gross_pay += d.amount; });
+	        	        frm.set_value('gross_pay', gross_pay);
+                        frm.doc.deductions.forEach(function(d) { total_ded += d.amount; });
+	        	        frm.set_value('total_deduction', total_ded);
                         cur_frm.refresh();
                     }
                 }
