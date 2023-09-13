@@ -83,6 +83,8 @@ def employee_checkin(args):
 
 							attend_doc = frappe.get_doc("Attendance", last_doc.attendance)
 							attend_doc.afternoon_in_time = i.get("time")
+							attend_doc.afternoon_in_record = doc.name
+							attend_doc.afternoon_in_address = i.get("officein_address")
 							attend_doc.save(ignore_permissions=True)
 
 							response = [] 
@@ -112,10 +114,14 @@ def employee_checkin(args):
 							if count == 1:								
 								attend_doc = frappe.get_doc("Attendance", last_doc.attendance)
 								attend_doc.out_time = i.get("time")
+								attend_doc.morning_out_record = doc.name
+								attend_doc.morning_out_address = i.get("officein_address")
 								attend_doc.save(ignore_permissions=True)
 							elif count == 3:
 								attend_doc = frappe.get_doc("Attendance", last_doc.attendance)
 								attend_doc.afternoon_out_time = i.get("time")
+								attend_doc.afternoon_out_record = doc.name
+								attend_doc.afternoon_out_address = i.get("officein_address")
 								attend_doc.save(ignore_permissions=True)
 
 
@@ -164,6 +170,8 @@ def employee_checkin(args):
 								"employee": i.get("employee"),
 								"attendance_date": i.get("date"),
 								"in_time": i.get("time"),
+								"morning_in_record": doc.name,
+								"morning_in_address": i.get("officein_address"),
 								"status": "Present"
 							})
 						attendance.save(ignore_permissions=True)
@@ -476,7 +484,7 @@ def attendance_list(employee,month_start_date=None,month_end_date=None):
 		end_date = get_last_day(current_date)
 
 		sql_query = """
-					SELECT `name`,`employee`,`employee_name`, `attendance_date`, `status`
+					SELECT `name`,`employee`,`employee_name`, `attendance_date`, `status`, `status_by_employee`, `status_by_hr`
 					FROM `tabAttendance`
 					WHERE `attendance_date` BETWEEN %(start_date)s AND %(end_date)s
 					AND `employee` = %(employee)s
@@ -516,7 +524,7 @@ def attendance_list(employee,month_start_date=None,month_end_date=None):
 		end_date = month_end_date
 
 		sql_query = """
-					SELECT `name`,`employee`,`employee_name`, `attendance_date`, `status`
+					SELECT `name`,`employee`,`employee_name`, `attendance_date`, `status`, `status_by_employee`, `status_by_hr`
 					FROM `tabAttendance`
 					WHERE `attendance_date` BETWEEN %(start_date)s AND %(end_date)s
 					AND `employee` = %(employee)s
@@ -946,3 +954,169 @@ def send_notification_after_eight15():
 	requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))	
 
 	
+
+
+@frappe.whitelist()
+def update_missing_overtime_amounts():
+	current_date = datetime.now()
+	current_month_start = current_date.replace(day=1)
+	current_month_end = (current_month_start.replace(month=current_month_start.month + 1) - timedelta(days=1)).date()
+
+	# Get Additional Salary records with overtime component and 0 amount for the current month
+	missing_overtime_salaries = frappe.get_all(
+		"Additional Salary",
+		filters={
+			"salary_component": "Overtime",
+			"amount": 0,
+			"payroll_date": [">=", current_month_start],
+			"payroll_date": ["<=", current_month_end],
+			"docstatus":1
+		},
+		fields=["name", "employee"]
+	)
+
+	for record in missing_overtime_salaries:
+		employee = record["employee"]
+		record_name = record["name"]
+
+		# Fetch overtime records for the same employee in the current month
+		overtime_records = frappe.get_all(
+			"Overtime",
+			filters={
+				"employee": employee,
+				"date": [">=", current_month_start],
+				"date": ["<=", current_month_end],
+				"docstatus":1
+			},
+			fields=["total_hrs"]
+		)
+		# Calculate total overtime hours and the corresponding amount
+		total_total_hrs = sum([overtime["total_hrs"] for overtime in overtime_records])
+		
+		# Get daily salary from the latest Salary Structure Assignment
+		latest_assignment = frappe.get_all(
+			"Salary Structure Assignment",
+			filters={"employee": employee, "docstatus": 1},
+			order_by="creation DESC",
+			limit=1
+		)
+		
+		if latest_assignment:
+			daily_salary = frappe.db.get_value("Salary Structure Assignment",
+												latest_assignment[0]["name"], "daily_salary")
+
+			# Calculate overtime salary
+			overtime_salary = ((daily_salary / 8) * 1.5) * total_total_hrs
+
+			# Update Additional Salary record with the calculated overtime amount
+			frappe.db.set_value("Additional Salary", record_name, "amount", overtime_salary)
+
+			# Update the child table in the Additional Salary document
+			additional_salary_doc = frappe.get_doc("Additional Salary", record_name)
+			overtime_breakup = {
+				"basic_per_hour": daily_salary,
+				"overtime_hours": total_total_hrs,
+				"amount": overtime_salary,
+				"overtime_link": record_name,
+			}
+			additional_salary_doc.set("overtime_breakup", [])
+			additional_salary_doc.append("overtime_breakup", overtime_breakup)
+			additional_salary_doc.save()
+def update_missing_overtime_amounts():
+	current_date = datetime.now()
+	current_month_start = current_date.replace(day=1)
+	current_month_end = (current_month_start.replace(month=current_month_start.month + 1) - timedelta(days=1)).date()
+
+	# Get Additional Salary records with overtime component and 0 amount for the current month
+	missing_overtime_salaries = frappe.get_all(
+		"Additional Salary",
+		filters={
+			"salary_component": "Overtime",
+			"amount": 0,
+			"payroll_date": [">=", current_month_start],
+			"payroll_date": ["<=", current_month_end],
+				"docstatus":1
+		},
+		fields=["name", "employee", "company"]
+	)
+
+	for record in missing_overtime_salaries:
+		employee = record["employee"]
+		company = record["company"]
+		record_name = record["name"]
+
+		# Fetch overtime records for the same employee in the current month
+		overtime_records = frappe.get_all(
+			"Overtime",
+			filters={
+				"employee": employee,
+				"date": [">=", current_month_start],
+				"date": ["<=", current_month_end],
+				"docstatus":1
+			},
+			fields=["date", "total_hrs"]
+		)
+
+		if not overtime_records:
+			continue
+
+		# Get daily salary from the latest Salary Structure Assignment
+		latest_assignment = frappe.get_all(
+			"Salary Structure Assignment",
+			filters={"employee": employee, "docstatus": 1},
+			order_by="creation DESC",
+			limit=1
+		)
+		
+		if latest_assignment:
+			daily_salary = frappe.db.get_value("Salary Structure Assignment",
+												latest_assignment[0]["name"], "daily_salary")
+
+			# Calculate total overtime hours and the corresponding amount
+			total_overtime_hours = sum([overtime["total_hrs"] for overtime in overtime_records])
+			overtime_salary = ((daily_salary / 8) * 1.5) * total_overtime_hours
+
+			# Update Additional Salary record with the calculated overtime amount
+			frappe.db.set_value("Additional Salary", record_name, "amount", overtime_salary)
+
+			# Update the child table in the Additional Salary document
+			additional_salary_doc = frappe.get_doc("Additional Salary", record_name)
+			additional_salary_doc.set("overtime_breakup", [])
+
+			for overtime in overtime_records:
+				overtime_date = overtime["overtime_date"]
+				overtime_hours = overtime["total_hrs"]
+
+				overtime_breakup = {
+					"basic_per_hour": daily_salary,
+					"overtime_hours": overtime_hours,
+					"amount": ((daily_salary / 8) * 1.5) * overtime_hours,
+					"overtime_link": overtime_date,  # Change this to the appropriate field
+				}
+				additional_salary_doc.append("overtime_breakup", overtime_breakup)
+
+			additional_salary_doc.save()
+
+
+@frappe.whitelist()
+def update_status_in_attendance(attendance_id,status_by_employee):
+	if frappe.db.exists("Attendance", {"name": attendance_id}):
+		attend_doc = frappe.get_doc("Attendance", attendance_id)
+		attend_doc.status_by_employee = status_by_employee
+		attend_doc.save(ignore_permissions=True)
+
+		response = [] 
+		msg = {
+			"error": False,
+			"message": "Attendance Approved by Employee successfully"
+		}
+		response.append(msg)
+		return response	
+	else:
+		response = [] 
+		msg = {
+			"error": True,
+			"message": "Attendance Record Not Exist"
+		}
+		response.append(msg)
+		return response

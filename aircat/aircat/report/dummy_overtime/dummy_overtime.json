@@ -1,0 +1,37 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2023-08-28 17:31:30.025307",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "AAA",
+ "modified": "2023-08-30 14:30:33.691509",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Dummy Overtime",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\n tabAttendance.employee,\n tabAttendance.employee_name,\n tabAttendance.attendance_date,\n DAYNAME(tabAttendance.attendance_date) AS day_of_week,\n TIME_FORMAT(tabAttendance.in_time, '%%H:%%i') AS in_time,\n TIME_FORMAT(tabAttendance.out_time, '%%H:%%i') AS out_time,\n TIME_FORMAT(tabAttendance.afternoon_in_time, '%%H:%%i') AS time_afternoon_in,\n TIME_FORMAT(tabAttendance.afternoon_out_time, '%%H:%%i') AS time_afternoon_out,\n TIME_FORMAT(TIMEDIFF(out_time, in_time), '%%H:%%i') AS total_time_morning,\n TIME_FORMAT(TIMEDIFF(afternoon_out_time, afternoon_in_time), '%%H:%%i') AS total_time_afternoon,\n TIME_FORMAT(TIMEDIFF(to_time, from_time), '%%H:%%i') AS over_time,\n TIME_FORMAT(\n        IFNULL(\n            ADDTIME(TIMEDIFF(tabAttendance.out_time, tabAttendance.in_time), TIMEDIFF(tabAttendance.afternoon_out_time, tabAttendance.afternoon_in_time)),\n            IFNULL(TIMEDIFF(tabAttendance.out_time, in_time), TIMEDIFF(tabAttendance.afternoon_out_time, tabAttendance.afternoon_in_time))\n        ),\n        '%%H:%%i'\n    ) AS total_work_time,\n\nTIME_FORMAT(\n        ADDTIME(\n            ADDTIME(\n                IFNULL(TIMEDIFF(tabAttendance.out_time, tabAttendance.in_time), '00:00'),\n                IFNULL(TIMEDIFF(tabAttendance.afternoon_out_time, tabAttendance.afternoon_in_time), '00:00')\n            ),\n            IFNULL(TIMEDIFF(tabOvertime.to_time, tabOvertime.from_time), '00:00')\n        ),\n    \n\n    '%%H:%%i'\n) AS total_work_time_over\n\n FROM tabAttendance\n LEFT JOIN tabOvertime\n ON tabAttendance.employee=tabOvertime.employee\n WHERE tabOvertime.docstatus = 1\n AND tabAttendance.docstatus = 1\n AND tabOvertime.date = tabAttendance.attendance_date",
+ "ref_doctype": "Attendance",
+ "report_name": "Dummy Overtime",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "Fleet Manager"
+  }
+ ]
+}

@@ -44,6 +44,15 @@ def get_results(filters,conditions):
 								ec.employee, date
 							""",filters,as_dict=1)
 	for result in results:
+		status = frappe.db.get_value("Attendance",{"attendance_date":result.date,"employee":filters.get("employee")},"status")
+		if status and status == "Present":
+			result["days"] = 1
+		elif status and status == "Half Day":
+			result["days"] = 0.5
+		else:
+			result["days"] = 0
+
+
 		result["late_entry"] = "00:00:00"
 		result.date = result.date.strftime("%d-%m-%y")
 		afternoon_hours = morning_hours = 0
@@ -87,11 +96,7 @@ def get_results(filters,conditions):
 			result.morning_out = str(result.morning_out).split(".")[0]
 		if result.afternoon_out:
 			result.afternoon_out = str(result.afternoon_out).split(".")[0]
-		if result.morning_in or result.morning_out or result.afternoon_out or result.afternoon_in:
-			result["days"] = 1
-		else:
-			result["days"] = 0
-	# frappe.utils.date_diff(doc.end_date,disbursement_date)
+
 
 	return results
     
@@ -152,7 +157,7 @@ def get_columns():
 		{
 			'fieldname': 'days',
 			'label': _('Days'),
-			'fieldtype': 'Int',
+			'fieldtype': 'float',
 			'align': 'left',
 			'width': 75
 		},

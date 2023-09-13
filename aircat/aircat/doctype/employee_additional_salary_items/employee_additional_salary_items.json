@@ -1,0 +1,112 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-21 19:11:43.303364",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "salary_component",
+  "salary_component_type",
+  "phone_bill",
+  "column_break_3",
+  "please_specify",
+  "currency",
+  "amount",
+  "payroll_date",
+  "payroll_month",
+  "payroll_year"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "salary_component",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Salary Component",
+   "options": "Salary Component",
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "fetch_from": "salary_component.type",
+   "fieldname": "salary_component_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Salary Component Type"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "columns": 1,
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payroll_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Payroll Date",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "phone_bill",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Phone Bill",
+   "options": "\n7175571\n8127557\n8137557\n8167557\n8200228\n8200299\n8207557\n8327557\n8337557\n8387557\n8755700"
+  },
+  {
+   "columns": 3,
+   "fieldname": "please_specify",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Please Specify"
+  },
+  {
+   "columns": 1,
+   "fieldname": "payroll_month",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Payroll Month",
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "payroll_year",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Payroll Year",
+   "options": "2023\n2024\n2025",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-08-24 13:51:25.345368",
+ "modified_by": "Administrator",
+ "module": "Aircat",
+ "name": "Employee Additional Salary Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

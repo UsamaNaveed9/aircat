@@ -30,7 +30,9 @@ app_license = "MIT"
 
 # include js in doctype views
 doctype_js = {
-    "Salary Slip" : "customjs/salary_slip.js"
+    "User Permission" : "customjs/user_permission.js",
+    "Salary Slip" : "customjs/salary_slip.js",
+	"Employee Checkin" : "customjs/employee_checkin.js"
     }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -104,13 +106,16 @@ doctype_js = {
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Employee Checkin": {
+		"on_update": "aircat.custompy.employee_checkin.update_time"
+	}
+	# "*": {
+	# 	"on_update": "method",
+	# 	"on_cancel": "method",
+	# 	"on_trash": "method"
+	# }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -201,3 +206,7 @@ scheduler_events = {
 # auth_hooks = [
 #	"aircat.auth.validate"
 # ]
+override_doctype_class = {
+	# "Salary Slip": "shaunglobal.custom_method.custom_user.CustomUser"
+    "Salary Slip" : "aircat.custompy.salary_slip.customSalary",
+}

@@ -60,13 +60,12 @@ def get_results(filters,conditions):
 									CASE WHEN COUNT(CASE WHEN log_type = 'OUT' THEN 1 END) > 1
 										THEN TIME(MAX(CASE WHEN log_type = 'OUT' THEN time END))
 									END AS afternoon_out,
-									# TIME((SELECT MAX(time) FROM `tabEmployee Checkin` WHERE log_type = 'OUT' and DATE(time) = DATE(ec.time) and employee = ec.employee) OFFSET 1) AS afternoon_out,
-									(SELECT from_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time)) as overtime_in,
-									(SELECT to_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time)) as overtime_out,
-									(SELECT purpose_of_overtime FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time)) as overtime_purpose,
-									(SELECT approver_suppervisor_ FROM `tabOvertime` WHERE employee = ec.employee AND status = 'Approved' AND date = DATE(ec.time)) AS supervisor,
-									(SELECT authorize_person_name FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time)) as authorizing_person,
-									TIMEDIFF((SELECT to_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time)),(SELECT from_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time))) as overtime_hours
+									(SELECT from_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1) as overtime_in,
+									(SELECT to_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1) as overtime_out,
+									(SELECT purpose_of_overtime FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1) as overtime_purpose,
+									(SELECT approver_suppervisor_ FROM `tabOvertime` WHERE employee = ec.employee AND status = 'Approved' AND date = DATE(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1) AS supervisor,
+									(SELECT authorize_person_name FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1) as authorizing_person,
+									TIMEDIFF((SELECT to_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1),(SELECT from_time FROM `tabOvertime` WHERE employee = ec.employee and status = 'Approved' and date = Date(ec.time) and docstatus = 1 ORDER BY creation LIMIT 1)) as overtime_hours
 							FROM
 								`tabEmployee Checkin` ec
 							WHERE
