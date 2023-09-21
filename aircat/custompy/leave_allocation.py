@@ -3,7 +3,7 @@ from hrms.hr.doctype.leave_allocation.leave_allocation import LeaveAllocation
 from hrms.hr.utils import get_leave_period, set_employee_name
 
 
-class customSalary(LeaveAllocation):
+class customLeaveAllocation(LeaveAllocation):
 	def validate(self):
 		self.validate_period()
 		self.validate_allocation_overlap()

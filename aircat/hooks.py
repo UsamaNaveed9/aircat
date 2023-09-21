@@ -32,6 +32,7 @@ app_license = "MIT"
 doctype_js = {
     "User Permission" : "customjs/user_permission.js",
     "Salary Slip" : "customjs/salary_slip.js",
+    "Leave Allocation" : "customjs/leave_allocation.js",
 	"Employee Checkin" : "customjs/employee_checkin.js"
     }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -209,4 +210,5 @@ scheduler_events = {
 override_doctype_class = {
 	# "Salary Slip": "shaunglobal.custom_method.custom_user.CustomUser"
     "Salary Slip" : "aircat.custompy.salary_slip.customSalary",
+    "Leave Allocation" : "aircat.custompy.leave_allocation.customLeaveAllocation",
 }
