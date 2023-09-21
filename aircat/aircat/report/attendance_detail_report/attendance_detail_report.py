@@ -61,7 +61,11 @@ def get_data(filters, conditions):
 					IFNULL(TIMEDIFF(tabOvertime.to_time, tabOvertime.from_time), '00:00')
 				),
 				'%%H:%%i'
-			) AS total_work_time_over
+			) AS total_work_time_over,
+			tabAttendance.status_by_employee,
+			tabAttendance.status_by_pic,
+			tabAttendance.status_by_hr
+		
 		FROM tabAttendance
 		LEFT JOIN (
 			SELECT employee, date, from_time, purpose_of_overtime,approver_suppervisor_,authorize_person_name, to_time
@@ -187,6 +191,27 @@ def get_columns():
 		{
 			'fieldname': 'total_work_time_over',
 			'label': _('Total Work Over Time'),
+			'fieldtype': 'Data',
+			'align': 'left',
+			'width': 150
+		},
+		{
+			'fieldname': 'status_by_employee',
+			'label': _('Status By Employee'),
+			'fieldtype': 'Data',
+			'align': 'left',
+			'width': 150
+		},
+		{
+			'fieldname': 'status_by_pic',
+			'label': _('Status PIC- Approved By'),
+			'fieldtype': 'Data',
+			'align': 'left',
+			'width': 150
+		},
+		{
+			'fieldname': 'status_by_hr',
+			'label': _('Status By HR'),
 			'fieldtype': 'Data',
 			'align': 'left',
 			'width': 150

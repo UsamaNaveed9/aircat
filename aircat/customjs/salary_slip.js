@@ -14,7 +14,7 @@ frappe.ui.form.on("Salary Slip", {
                         let earnings = r.message[0];
                         let deductions = r.message[1];
                         //console.log(earnings,deductions);
-                        cur_frm.clear_table("earnings");
+                        //cur_frm.clear_table("earnings");
                         //cur_frm.clear_table("deductions");
                         for (let i = 0; i < earnings.length; i++) {
                             let e_comp = cur_frm.add_child("earnings");
@@ -101,7 +101,7 @@ frappe.ui.form.on("Salary Slip", {
                         let earnings = r.message[0];
                         let deductions = r.message[1];
                         //console.log(earnings,deductions);
-                        cur_frm.clear_table("earnings");
+                        //cur_frm.clear_table("earnings");
                         // cur_frm.clear_table("deductions");
                         for (let i = 0; i < earnings.length; i++) {
                             let e_comp = cur_frm.add_child("earnings");
@@ -183,7 +183,7 @@ frappe.ui.form.on("Salary Slip", {
                         let earnings = r.message[0];
                         let deductions = r.message[1];
                         //console.log(earnings,deductions);
-                        cur_frm.clear_table("earnings");
+                        //cur_frm.clear_table("earnings");
                         //cur_frm.clear_table("deductions");
                         for (let i = 0; i < earnings.length; i++) {
                             console.log(frm.doc.payment_days);
@@ -265,8 +265,9 @@ frappe.ui.form.on("Salary Slip", {
             frm.doc.deductions.forEach(function (d) { total_ded += d.amount; });
             frm.set_value('total_deduction', total_ded);            
         }
+        frm.set_value('net_pay', gross_pay - total_ded);
 
-        frm.refresh_fields(["gross_pay", "total_deduction"])
+        frm.refresh_fields(["gross_pay", "total_deduction", "net_pay"])
     }
     // before_save: function(frm){
     //     var ern = cur_frm.doc.earnings;

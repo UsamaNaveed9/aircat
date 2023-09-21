@@ -8,7 +8,7 @@ from frappe.utils.data import getdate
 from datetime import datetime, timedelta
 
 class Overtime(Document):
-	# def only_once(self):
+	# def validate(self):
 	# 	# only once for updating add_salaries
 	# 	current_date = datetime.now()
 	# 	current_month_start = current_date.replace(day=1)
